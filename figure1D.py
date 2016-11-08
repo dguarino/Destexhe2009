@@ -32,7 +32,12 @@ params = {
     },
 
     'Injections' : {
-        'LTS' : DCSource( amplitude=25., start=200.0, stop=500.0 )
+        'LTS' : {
+            'source' : DCSource,
+            'amplitude' : -.25,
+            'start' : 200.0,
+            'stop' : 500.0
+        },
     },
 
     'Recorders' : {

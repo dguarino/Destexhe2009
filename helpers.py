@@ -54,16 +54,15 @@ def build_network(params):
 
 def perform_injections(params, populations):
     for modKey,modVal in params['Injections'].iteritems():
-        print modKey,modVal
-        #modVal.inject_into(populations[modKey])
-        inj = modVal
-        populations[modKey][0].inject( inj )
+        # TODO generalize to other sources!!!
+        source = modVal['source'](amplitude=modVal['amplitude'], start=modVal['start'], stop=modVal['stop'])
+        populations[modKey].inject( source )
 
 
 def record_data(params, populations):
     for recPop, recVal in params['Recorders'].iteritems():
         for elKey,elVal in recVal.iteritems():
-            populations[recPop].record( None )
+            #populations[recPop].record( None )
             if elVal == 'all':
                 populations[recPop].record( elKey )
             else:
