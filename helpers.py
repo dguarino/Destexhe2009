@@ -32,11 +32,8 @@ def build_network(Params):
             receptor_type = projVal['receptor_type']
         )
 
-
     for key in Populations.keys():
         Populations[key].initialize()
-
-   # print 'prima dentro:',Populations['py'][7].a
 
     for modKey,modVal in Params['Modifiers'].iteritems():
         if type(modVal['cells']['start']) == float:
@@ -50,17 +47,20 @@ def build_network(Params):
 
         cells = Populations[modKey].local_cells
         for key,value in modVal['properties'].iteritems():
-            print list(cells[ start:end ])
-            Populations[modKey][ list(cells[ start:end ]) ].set(**{key:value})
+            Populations[modKey][ Populations[modKey].id_to_index(list(cells[ start:end ])) ].set(**{key:value})
 
-   # print 'dopo dentro:',getattr(Populations['py'][7], 'a')
+    for modKey,modVal in Params['Injections'].iteritems():
+        #modVal.inject_into(Populations[modKey])
+        Populations[modKey].inject( modVal )
 
     return Populations
 
 
 def record_data(Params, Populations):
     for recPop, recVal in Params['Recorders'].iteritems():
+        print recPop, recVal
         for elKey,elVal in recVal.iteritems():
+            print elKey, elVal
             if elVal == 'all':
                 Populations[recPop].record( elKey )
             else:
@@ -123,6 +123,7 @@ def analyse(Populations,filename):
     score = {}
     dt = datetime.now()
     date = dt.strftime("%d-%m-%I-%M")
+
     for key,p in Populations.iteritems():
         print key
         if key != 'ext':
@@ -131,7 +132,7 @@ def analyse(Populations,filename):
             neo = pickle.load( open('results/'+key+filename+'.pkl', "rb") )
             data = neo.segments[0]
 
-            #vm = data.filter(name = 'v')[0]
+            vm = data.filter(name = 'v')[0]
             #gsyn_exc = data.filter(name="gsyn_exc")
             #gsyn_inh = data.filter(name="gsyn_inh")
             #if not gsyn_exc:
@@ -140,26 +141,26 @@ def analyse(Populations,filename):
             #    gsyn = gsyn_exc[0]
 
             Figure(
-                #Panel(vm, ylabel="Membrane potential (mV)",xlabel="Time (ms)", xticks=True,yticks = True,legend = None),
+                Panel(vm, ylabel="Membrane potential (mV)", xlabel="Time (ms)", xticks=True, yticks=True, legend=None),
                 #Panel(gsyn,ylabel = "Synaptic conductance (uS)",xlabel="Time (ms)", xticks=True,legend = None),
                 #Panel(rd.sample(data.spiketrains,100), xlabel="Time (ms)", xticks=True, markersize = 1)
-                Panel(data.spiketrains, xlabel="Time (ms)", xticks=True, markersize = 1)
+                #Panel(data.spiketrains, xlabel="Time (ms)", xticks=True, markersize=1)
              ).save('results/'+date+'/'+key+'-'+filename+".png")
 
 
-            fig = plot.figure(2)
-            plot.subplot(pop_number,1,pop_index)
-            ylabel = key
-            n,bins,patches = plot.hist(np.mean(vm,1),50)
-            fig.savefig('results/'+date+'/'+filename+'hist.png')
+            #fig = plot.figure(2)
+            #plot.subplot(pop_number,1,pop_index)
+            #ylabel = key
+            #n,bins,patches = plot.hist(np.mean(vm,1),50)
+            #fig.savefig('results/'+date+'/'+filename+'hist.png')
 
-            # metric supposed to characterize bimodality
-            bins = bins[:-1]
-            prop_left = sum([n[i] for i,data in enumerate(bins) if bins[i]<(np.mean(vm)-np.std(vm)/2)])/sum(n)
-            prop_right = sum([n[i] for i,data in enumerate(bins) if bins[i]>(np.mean(vm)+np.std(vm)/2)])/sum(n)
-            score[key] = float("{0:.2f}".format(prop_left*prop_right))
-            print "prop_left",prop_left, "prop_right",prop_right
-            print "score",prop_left*prop_right
+            ## metric supposed to characterize bimodality
+            #bins = bins[:-1]
+            #prop_left = sum([n[i] for i,data in enumerate(bins) if bins[i]<(np.mean(vm)-np.std(vm)/2)])/sum(n)
+            #prop_right = sum([n[i] for i,data in enumerate(bins) if bins[i]>(np.mean(vm)+np.std(vm)/2)])/sum(n)
+            #score[key] = float("{0:.2f}".format(prop_left*prop_right))
+            #print "prop_left",prop_left, "prop_right",prop_right
+            #print "score",prop_left*prop_right
 
             if pop_index == pop_number :
                 fig.clear()

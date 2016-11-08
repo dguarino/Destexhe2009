@@ -29,7 +29,6 @@ params = {
             }
         },
 
-
        'py' : {
             'n': 1600, # units
             'type': EIF_cond_alpha_isfa_ista,
@@ -247,16 +246,32 @@ params = {
 
     'Recorders' : {
         'py' : {
-            'spikes' :  'all'
+            'spikes' :  'all',
+            'v' : {
+                'start' : 0,
+                'end' : 10,
+            }
         },
         'inh' : {
-            'spikes' :  'all'
+            'spikes' :  'all',
+            'v' : {
+                'start' : 0,
+                'end' : 10,
+            }
         },
         'pyB' : {
-            'spikes' :  'all'
+            'spikes' :  'all',
+            'v' : {
+                'start' : 0,
+                'end' : 10,
+            }
         },
         'inhB' : {
-            'spikes' :  'all'
+            'spikes' :  'all',
+            'v' : {
+                'start' : 0,
+                'end' : 10,
+            }
         },
     },
 
