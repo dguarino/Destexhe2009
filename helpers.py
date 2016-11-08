@@ -11,74 +11,77 @@ import matplotlib.pyplot as plot
 from datetime import datetime
 
 
-def build_network(Params):
-    setup( timestep=Params['dt'])
+def build_network(params):
+    setup( timestep=params['dt'] )
 
-    Populations = {}
-    for popKey,popVal in Params['Populations'].iteritems():
+    populations = {}
+    for popKey,popVal in params['Populations'].iteritems():
         if isinstance(popVal['n'],dict):
-            number = int(Params['Populations'][popVal['n']['ref']]['n'] * popVal['n']['ratio'])
-            Populations[popKey] = Population( number, popVal['type'], cellparams=popVal['cellparams'] )
+            number = int(params['Populations'][popVal['n']['ref']]['n'] * popVal['n']['ratio'])
+            populations[popKey] = Population( number, popVal['type'], cellparams=popVal['cellparams'] )
         else:
-            Populations[popKey] = Population( popVal['n'], popVal['type'], cellparams=popVal['cellparams'] )
+            populations[popKey] = Population( popVal['n'], popVal['type'], cellparams=popVal['cellparams'] )
 
-    Projections = {}
-    for projKey,projVal in Params['Projections'].iteritems():
-        Projections[projKey] = Projection(
-            Populations[ projVal['source'] ],
-            Populations[ projVal['target'] ],
+    for key in populations.keys():
+        populations[key].initialize()
+
+    projections = {}
+    for projKey,projVal in params['Projections'].iteritems():
+        projections[projKey] = Projection(
+            populations[ projVal['source'] ],
+            populations[ projVal['target'] ],
             connector = projVal['connector'],
             synapse_type = projVal['synapse_type'](weight = projVal['weight']),
             receptor_type = projVal['receptor_type']
         )
 
-    for key in Populations.keys():
-        Populations[key].initialize()
-
-    for modKey,modVal in Params['Modifiers'].iteritems():
+    for modKey,modVal in params['Modifiers'].iteritems():
         if type(modVal['cells']['start']) == float:
-            start = int(modVal['cells']['start'] * Populations[modKey].local_size)
+            start = int(modVal['cells']['start'] * populations[modKey].local_size)
         else:
             start = modVal['cells']['start']
         if type(modVal['cells']['end']) == float:
-           end = int(modVal['cells']['end'] * Populations[modKey].local_size)
+           end = int(modVal['cells']['end'] * populations[modKey].local_size)
         else:
             end = modVal['cells']['end']
 
-        cells = Populations[modKey].local_cells
+        cells = populations[modKey].local_cells
         for key,value in modVal['properties'].iteritems():
-            Populations[modKey][ Populations[modKey].id_to_index(list(cells[ start:end ])) ].set(**{key:value})
+            populations[modKey][ populations[modKey].id_to_index(list(cells[ start:end ])) ].set(**{key:value})
 
-    for modKey,modVal in Params['Injections'].iteritems():
-        #modVal.inject_into(Populations[modKey])
-        Populations[modKey].inject( modVal )
-
-    return Populations
+    return populations
 
 
-def record_data(Params, Populations):
-    for recPop, recVal in Params['Recorders'].iteritems():
-        print recPop, recVal
+def perform_injections(params, populations):
+    for modKey,modVal in params['Injections'].iteritems():
+        print modKey,modVal
+        #modVal.inject_into(populations[modKey])
+        inj = modVal
+        populations[modKey][0].inject( inj )
+
+
+def record_data(params, populations):
+    for recPop, recVal in params['Recorders'].iteritems():
         for elKey,elVal in recVal.iteritems():
-            print elKey, elVal
+            populations[recPop].record( None )
             if elVal == 'all':
-                Populations[recPop].record( elKey )
+                populations[recPop].record( elKey )
             else:
-                Populations[recPop][elVal['start']:elVal['end']].record( elKey )
+                populations[recPop][elVal['start']:elVal['end']].record( elKey )
 
 
-def run_simulation(Params):
+def run_simulation(params):
     print "Running Network"
     timer = Timer()
     timer.reset()
-    run(Params['run_time'])
+    run(params['run_time'])
     simCPUtime = timer.elapsedTime()
     print "Simulation Time: %s" % str(simCPUtime)
 
 
-def save_data(Populations,addon=''):
+def save_data(populations, addon=''):
     print "saving data"
-    for key,p in Populations.iteritems():
+    for key,p in populations.iteritems():
         if key != 'ext':
             data = p.get_data()
             p.write_data('results/'+key+addon+'.pkl', annotations={'script_name': __file__})
@@ -116,15 +119,15 @@ def load_spikelist( filename, t_start=.0, t_stop=1. ):
     return spklist
 
 
-def analyse(Populations,filename):
+def analyse(populations, filename):
     print "analysing data"
-    pop_number = len(Populations) - 1
+    pop_number = len(populations) - 1
     pop_index = 0
     score = {}
     dt = datetime.now()
     date = dt.strftime("%d-%m-%I-%M")
 
-    for key,p in Populations.iteritems():
+    for key,p in populations.iteritems():
         print key
         if key != 'ext':
             pop_index = pop_index + 1

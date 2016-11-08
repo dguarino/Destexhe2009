@@ -33,10 +33,11 @@ Populations = h.build_network(external.params)
 
 h.record_data(external.params, Populations)
 
+h.perform_injections(external.params, Populations)
+
 h.run_simulation(external.params)
 
 h.save_data(Populations)
-
 
 end()
 
