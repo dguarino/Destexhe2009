@@ -22,8 +22,8 @@ params = {
                 'delta_T'    : 2.5,   # mV, steepness of exponential approach to threshold
                 'tau_w'      : 150.0, # ms, time constant of adaptation variable
                 'cm'         : 0.15, # nF, 1 uF/cm^2 with 20000 um^2 is the membrane area
-                'a'          : 12.,  # uS, spike-frequency adaptation
-                'b'          : .03,  # !!!!!! nA, increment to the adaptation variable
+                'a'          : 13.,  # uS, spike-frequency adaptation
+                'b'          : .0,  # !!!!!! nA, increment to the adaptation variable
                 #'i_offset'   : 0.25,  # nA, constant injected current
             }
         },
@@ -35,7 +35,7 @@ params = {
     'Injections' : {
         'LTS' : {
             'source' : DCSource,
-            'amplitude' : .25,
+            'amplitude' : -.25,
             'start' : 20.0,
             'stop' : 420.0
         },
