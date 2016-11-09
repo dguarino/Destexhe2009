@@ -34,9 +34,9 @@ params = {
     'Injections' : {
         'LTS' : {
             'source' : DCSource,
-            'amplitude' : -.25,
-            'start' : 200.0,
-            'stop' : 500.0
+            'amplitude' : -.8,
+            'start' : 20.0,
+            'stop' : 420.0
         },
     },
 
