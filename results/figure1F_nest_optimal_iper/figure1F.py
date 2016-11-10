@@ -35,7 +35,7 @@ params = {
     'Injections' : {
         'RE' : {
             'source' : DCSource,
-            'amplitude' : .25,
+            'amplitude' : -.25,
             'start' : 20.0,
             'stop' : 420.0
         },
