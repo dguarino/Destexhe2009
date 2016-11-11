@@ -3,15 +3,15 @@ from pyNN.utility import Timer
 
 params = {
 
-    'run_time': 1000., # ms
+    'run_time': 2000., # ms
     'dt': 0.01, # ms
 
     'Populations' : {
-        'LTS' : {
+        'RS' : {
             'n': 1, # units
             'type': EIF_cond_alpha_isfa_ista,
             'cellparams': {
-                'tau_m'      : 30.0,  # ms, time constant of leak conductance
+                'tau_m'      : 20.0,  # ms, time constant of leak conductance
                 'tau_syn_E'  : 5.0,   # ms, time constant of exponential decay of conductance shift
                 'tau_syn_I'  : 10.0,  # ms, as above
                 'tau_refrac' : 2.5,   # ms, refractory period
@@ -19,12 +19,11 @@ params = {
                 'v_reset'    : -60.0, # mV, reset after spike
                 'v_thresh'   : -50.0, # mV, spike threshold
                 'delta_T'    : 2.5,   # mV, steepness of exponential approach to threshold
-                'tau_w'      : 150.0, # ms, time constant of adaptation variable
-                'cm'         : 0.15, # nF, 1 uF/cm^2 with 20000 um^2 is the membrane area
-                'a'          : 12.,  # uS, spike-frequency adaptation
-                'b'          : .03,  # !!!!!! nA, increment to the adaptation variable
+                'tau_w'      : 600.0, # ms, time constant of adaptation variable
+                'cm'         : 0.200, # nF, 1 uF/cm^2 with 20000 um^2 is the membrane area
+                'a'          : 0.001, # uS, spike-frequency adaptation
+                'b'          : .1,    # nA, increment to the adaptation variable
                 #'i_offset'   : 0.25,  # nA, constant injected current
-                # tau_m = C/gleak, BretteGerstner2005: 0.281 nF / 30 nS = .0009
             }
         },
     },
@@ -33,23 +32,27 @@ params = {
     },
 
     'Injections' : {
-        'LTS' : {
-            'source' : DCSource,
-            'amplitude' : .25,
-            'start' : 20.0,
-            'stop' : 420.0
+        'RS' : {
+            #'source' : DCSource,
+            #'amplitude' : -.25,
+            #'start' : 20.0,
+            #'stop' : 420.0
+            'source' : StepCurrentSource,
+            'amplitude' : [-.25, 0.0, .25, 0.0],
+            'start' : [200., 600., 1000., 1400.],
+            'stop' : 0.0
         },
     },
 
     'Recorders' : {
-        'LTS' : {
-            #'spikes' :  'all',
+        'RS' : {
+            'spikes' :  'all',
             'v' : 'all',
             #'v' : {
             #    'start':0,
             #    'end':1
             #}
-        }
+        },
     },
 
     'Modifiers' :{

@@ -22,7 +22,7 @@ params = {
                 'tau_w'      : 600.0, # ms, time constant of adaptation variable
                 'cm'         : 0.200, # nF, 1 uF/cm^2 with 20000 um^2 is the membrane area
                 'a'          : 0.001, # uS, spike-frequency adaptation
-                'b'          : .1,   # !!!!!! nA, increment to the adaptation variable
+                'b'          : .1,    # nA, increment to the adaptation variable
                 'i_offset'   : 0.25,  # nA, constant injected current
             }
         },

@@ -54,8 +54,10 @@ def build_network(params):
 
 def perform_injections(params, populations):
     for modKey,modVal in params['Injections'].iteritems():
-        # TODO generalize to other sources!!!
-        source = modVal['source'](amplitude=modVal['amplitude'], start=modVal['start'], stop=modVal['stop'])
+        if isinstance(modVal['start'], (list)):
+            source = modVal['source'](times=modVal['start'], amplitudes=modVal['amplitude'])
+        else:
+            source = modVal['source'](amplitude=modVal['amplitude'], start=modVal['start'], stop=modVal['stop'])
         populations[modKey].inject( source )
 
 
@@ -146,7 +148,7 @@ def analyse(populations, filename):
                 Panel(vm, ylabel="Membrane potential (mV)", xlabel="Time (ms)", xticks=True, yticks=True, legend=None),
                 #Panel(gsyn,ylabel = "Synaptic conductance (uS)",xlabel="Time (ms)", xticks=True,legend = None),
                 #Panel(rd.sample(data.spiketrains,100), xlabel="Time (ms)", xticks=True, markersize = 1)
-                #Panel(data.spiketrains, xlabel="Time (ms)", xticks=True, markersize=1)
+                Panel(data.spiketrains, xlabel="Time (ms)", xticks=True, markersize=1)
              ).save('results/'+date+'/'+key+'-'+filename+".png")
 
 
@@ -164,9 +166,12 @@ def analyse(populations, filename):
             #print "prop_left",prop_left, "prop_right",prop_right
             #print "score",prop_left*prop_right
 
-            if pop_index == pop_number :
-                fig.clear()
+            #if pop_index == pop_number :
+            #    fig.clear()
 
             #TODO ; add parameter file to the result folder
+
+            # for systems with low memory :)
+            os.remove('results/'+key+filename+'.pkl')
 
     return score
