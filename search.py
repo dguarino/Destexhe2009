@@ -34,8 +34,20 @@ params = {
 #RS-{'Populations.RS.cellparams.a': 5.0, 'Populations.RS.cellparams.b': 0.01, 'Populations.RS.cellparams.tau_w': 150.0, 'Populations.RS.cellparams.tau_m': 20.0, 'Populations.RS.cellparams.cm': 0.1}
 #RS-{'Populations.RS.cellparams.a': 5.0, 'Populations.RS.cellparams.b': 0.01, 'Populations.RS.cellparams.tau_w': 150.0, 'Populations.RS.cellparams.tau_m': 30.0, 'Populations.RS.cellparams.cm': 0.1}
 
+
 # candidate RE:
 # rebound burst and adaptation
+
+# best 11-11-06-45
+#RS-{'Populations.RS.cellparams.a': 23.0, 'Populations.RS.cellparams.b': 0.1, 'Populations.RS.cellparams.tau_w': 150.0, 'Populations.RS.cellparams.tau_m': 20.0, 'Populations.RS.cellparams.cm': 0.15} !!!
+#RS-{'Populations.RS.cellparams.a': 23.0, 'Populations.RS.cellparams.b': 0.1, 'Populations.RS.cellparams.tau_w': 150.0, 'Populations.RS.cellparams.tau_m': 20.0, 'Populations.RS.cellparams.cm': 0.2}!!!
+#RS-{'Populations.RS.cellparams.a': 23.0, 'Populations.RS.cellparams.b': 0.1, 'Populations.RS.cellparams.tau_w': 250.0, 'Populations.RS.cellparams.tau_m': 20.0, 'Populations.RS.cellparams.cm': 0.1} !!!
+#RS-{'Populations.RS.cellparams.a': 23.0, 'Populations.RS.cellparams.b': 0.1, 'Populations.RS.cellparams.tau_w': 250.0, 'Populations.RS.cellparams.tau_m': 20.0, 'Populations.RS.cellparams.cm': 0.2}
+#RS-{'Populations.RS.cellparams.a': 23.0, 'Populations.RS.cellparams.b': 0.1, 'Populations.RS.cellparams.tau_w': 350.0, 'Populations.RS.cellparams.tau_m': 20.0, 'Populations.RS.cellparams.cm': 0.1} !!! burst
+#RS-{'Populations.RS.cellparams.a': 23.0, 'Populations.RS.cellparams.b': 0.1, 'Populations.RS.cellparams.tau_w': 550.0, 'Populations.RS.cellparams.tau_m': 20.0, 'Populations.RS.cellparams.cm': 0.1} !!!
+#RS-{'Populations.RS.cellparams.a': 23.0, 'Populations.RS.cellparams.b': 0.1, 'Populations.RS.cellparams.tau_w': 600.0, 'Populations.RS.cellparams.tau_m': 30.0, 'Populations.RS.cellparams.cm': 0.18} !!!
+# ... up to
+#RS-{'Populations.RS.cellparams.a': 23.0, 'Populations.RS.cellparams.b': 0.1, 'Populations.RS.cellparams.tau_w': 600.0, 'Populations.RS.cellparams.tau_m': 30.0, 'Populations.RS.cellparams.cm': 0.22}
 
 #11-11-06-32
 #RS-{'Populations.RS.cellparams.a': 5.0, 'Populations.RS.cellparams.b': 0.1, 'Populations.RS.cellparams.tau_w': 150.0, 'Populations.RS.cellparams.tau_m': 20.0, 'Populations.RS.cellparams.cm': 0.1}
@@ -61,6 +73,12 @@ params = {
 #RS-{'Populations.RS.cellparams.a': 10.0, 'Populations.RS.cellparams.b': 0.1, 'Populations.RS.cellparams.tau_w': 450.0, 'Populations.RS.cellparams.tau_m': 30.0, 'Populations.RS.cellparams.cm': 0.1}
 #RS-{'Populations.RS.cellparams.a': 10.0, 'Populations.RS.cellparams.b': 0.1, 'Populations.RS.cellparams.tau_w': 550.0, 'Populations.RS.cellparams.tau_m': 30.0, 'Populations.RS.cellparams.cm': 0.1}
 #RS-{'Populations.RS.cellparams.a': 10.0, 'Populations.RS.cellparams.b': 0.1, 'Populations.RS.cellparams.tau_w': 600.0, 'Populations.RS.cellparams.tau_m': 30.0, 'Populations.RS.cellparams.cm': 0.1}
+
+# 11-11-06-41
+#RS-{'Populations.RS.cellparams.a': 15.0, 'Populations.RS.cellparams.b': 0.1, 'Populations.RS.cellparams.tau_w': 450.0, 'Populations.RS.cellparams.tau_m': 20.0, 'Populations.RS.cellparams.cm': 0.1} !!!
+
+
+
 
 
 # candidate TC:
@@ -125,6 +143,8 @@ params = {
 #RS-{'Populations.RS.cellparams.a': 15.0, 'Populations.RS.cellparams.b': 0.01, 'Populations.RS.cellparams.tau_w': 600.0, 'Populations.RS.cellparams.tau_m': 30.0, 'Populations.RS.cellparams.cm': 0.15}!!!!
 #RS-{'Populations.RS.cellparams.a': 15.0, 'Populations.RS.cellparams.b': 0.01, 'Populations.RS.cellparams.tau_w': 600.0, 'Populations.RS.cellparams.tau_m': 30.0, 'Populations.RS.cellparams.cm': 0.18}!!!!
 
+# 43
+#RS-{'Populations.RS.cellparams.a': 23.0, 'Populations.RS.cellparams.b': 0.0, 'Populations.RS.cellparams.tau_w': 350.0, 'Populations.RS.cellparams.tau_m': 20.0, 'Populations.RS.cellparams.cm': 0.15} !!
 
 #rebound burst no adaptation
 #RS-{'Populations.RS.cellparams.a': 5.0, 'Populations.RS.cellparams.b': 0.1, 'Populations.RS.cellparams.tau_w': 350.0, 'Populations.RS.cellparams.tau_m': 30.0, 'Populations.RS.cellparams.cm': 0.1}
