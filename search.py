@@ -34,14 +34,100 @@ params = {
 #RS-{'Populations.RS.cellparams.a': 5.0, 'Populations.RS.cellparams.b': 0.01, 'Populations.RS.cellparams.tau_w': 150.0, 'Populations.RS.cellparams.tau_m': 20.0, 'Populations.RS.cellparams.cm': 0.1}
 #RS-{'Populations.RS.cellparams.a': 5.0, 'Populations.RS.cellparams.b': 0.01, 'Populations.RS.cellparams.tau_w': 150.0, 'Populations.RS.cellparams.tau_m': 30.0, 'Populations.RS.cellparams.cm': 0.1}
 
-#burst e adaptation 11-11-06-32 11-11-06-33
+# candidate RE:
+# rebound burst and adaptation
+
+#11-11-06-32
 #RS-{'Populations.RS.cellparams.a': 5.0, 'Populations.RS.cellparams.b': 0.1, 'Populations.RS.cellparams.tau_w': 150.0, 'Populations.RS.cellparams.tau_m': 20.0, 'Populations.RS.cellparams.cm': 0.1}
 #RS-{'Populations.RS.cellparams.a': 5.0, 'Populations.RS.cellparams.b': 0.1, 'Populations.RS.cellparams.tau_w': 150.0, 'Populations.RS.cellparams.tau_m': 30.0, 'Populations.RS.cellparams.cm': 0.1}
 #RS-{'Populations.RS.cellparams.a': 5.0, 'Populations.RS.cellparams.b': 0.1, 'Populations.RS.cellparams.tau_w': 250.0, 'Populations.RS.cellparams.tau_m': 20.0, 'Populations.RS.cellparams.cm': 0.1}
 #RS-{'Populations.RS.cellparams.a': 5.0, 'Populations.RS.cellparams.b': 0.1, 'Populations.RS.cellparams.tau_w': 250.0, 'Populations.RS.cellparams.tau_m': 30.0, 'Populations.RS.cellparams.cm': 0.1}
 #RS-{'Populations.RS.cellparams.a': 5.0, 'Populations.RS.cellparams.b': 0.1, 'Populations.RS.cellparams.tau_w': 350.0, 'Populations.RS.cellparams.tau_m': 20.0, 'Populations.RS.cellparams.cm': 0.1}
-# rebound interessante
+
+#11-11-06-33
+#RS-{'Populations.RS.cellparams.a': 10.0, 'Populations.RS.cellparams.b': 0.1, 'Populations.RS.cellparams.tau_w': 150.0, 'Populations.RS.cellparams.tau_m': 20.0, 'Populations.RS.cellparams.cm': 0.1}
+#RS-{'Populations.RS.cellparams.a': 10.0, 'Populations.RS.cellparams.b': 0.1, 'Populations.RS.cellparams.tau_w': 150.0, 'Populations.RS.cellparams.tau_m': 30.0, 'Populations.RS.cellparams.cm': 0.1}
+#RS-{'Populations.RS.cellparams.a': 10.0, 'Populations.RS.cellparams.b': 0.1, 'Populations.RS.cellparams.tau_w': 250.0, 'Populations.RS.cellparams.tau_m': 20.0, 'Populations.RS.cellparams.cm': 0.1}
+
+# 11-11-06-36 best
+#RS-{'Populations.RS.cellparams.a': 10.0, 'Populations.RS.cellparams.b': 0.1, 'Populations.RS.cellparams.tau_w': 350.0, 'Populations.RS.cellparams.tau_m': 20.0, 'Populations.RS.cellparams.cm': 0.1}
+#RS-{'Populations.RS.cellparams.a': 10.0, 'Populations.RS.cellparams.b': 0.1, 'Populations.RS.cellparams.tau_w': 450.0, 'Populations.RS.cellparams.tau_m': 20.0, 'Populations.RS.cellparams.cm': 0.1}
+#RS-{'Populations.RS.cellparams.a': 10.0, 'Populations.RS.cellparams.b': 0.1, 'Populations.RS.cellparams.tau_w': 550.0, 'Populations.RS.cellparams.tau_m': 20.0, 'Populations.RS.cellparams.cm': 0.1}
+#RS-{'Populations.RS.cellparams.a': 10.0, 'Populations.RS.cellparams.b': 0.1, 'Populations.RS.cellparams.tau_w': 600.0, 'Populations.RS.cellparams.tau_m': 20.0, 'Populations.RS.cellparams.cm': 0.1}
+
+# 11-11-06-37 best
+#RS-{'Populations.RS.cellparams.a': 10.0, 'Populations.RS.cellparams.b': 0.1, 'Populations.RS.cellparams.tau_w': 250.0, 'Populations.RS.cellparams.tau_m': 30.0, 'Populations.RS.cellparams.cm': 0.1}
+#RS-{'Populations.RS.cellparams.a': 10.0, 'Populations.RS.cellparams.b': 0.1, 'Populations.RS.cellparams.tau_w': 350.0, 'Populations.RS.cellparams.tau_m': 30.0, 'Populations.RS.cellparams.cm': 0.1}
+#RS-{'Populations.RS.cellparams.a': 10.0, 'Populations.RS.cellparams.b': 0.1, 'Populations.RS.cellparams.tau_w': 450.0, 'Populations.RS.cellparams.tau_m': 30.0, 'Populations.RS.cellparams.cm': 0.1}
+#RS-{'Populations.RS.cellparams.a': 10.0, 'Populations.RS.cellparams.b': 0.1, 'Populations.RS.cellparams.tau_w': 550.0, 'Populations.RS.cellparams.tau_m': 30.0, 'Populations.RS.cellparams.cm': 0.1}
+#RS-{'Populations.RS.cellparams.a': 10.0, 'Populations.RS.cellparams.b': 0.1, 'Populations.RS.cellparams.tau_w': 600.0, 'Populations.RS.cellparams.tau_m': 30.0, 'Populations.RS.cellparams.cm': 0.1}
+
+
+# candidate TC:
+
+# best so far (real rebound burst and little adapatation)
+# 11-11-06-35 36
+#RS-{'Populations.RS.cellparams.a': 10.0, 'Populations.RS.cellparams.b': 0.01, 'Populations.RS.cellparams.tau_w': 250.0, 'Populations.RS.cellparams.tau_m': 20.0, 'Populations.RS.cellparams.cm': 0.1}
+#RS-{'Populations.RS.cellparams.a': 10.0, 'Populations.RS.cellparams.b': 0.01, 'Populations.RS.cellparams.tau_w': 250.0, 'Populations.RS.cellparams.tau_m': 30.0, 'Populations.RS.cellparams.cm': 0.1}
+#RS-{'Populations.RS.cellparams.a': 10.0, 'Populations.RS.cellparams.b': 0.01, 'Populations.RS.cellparams.tau_w': 350.0, 'Populations.RS.cellparams.tau_m': 30.0, 'Populations.RS.cellparams.cm': 0.15}
+#RS-{'Populations.RS.cellparams.a': 10.0, 'Populations.RS.cellparams.b': 0.01, 'Populations.RS.cellparams.tau_w': 350.0, 'Populations.RS.cellparams.tau_m': 30.0, 'Populations.RS.cellparams.cm': 0.18}
+# 11-11-06-38
+#RS-{'Populations.RS.cellparams.a': 15.0, 'Populations.RS.cellparams.b': 0.0, 'Populations.RS.cellparams.tau_w': 150.0, 'Populations.RS.cellparams.tau_m': 20.0, 'Populations.RS.cellparams.cm': 0.1}
+#RS-{'Populations.RS.cellparams.a': 15.0, 'Populations.RS.cellparams.b': 0.0, 'Populations.RS.cellparams.tau_w': 250.0, 'Populations.RS.cellparams.tau_m': 20.0, 'Populations.RS.cellparams.cm': 0.1}
+#RS-{'Populations.RS.cellparams.a': 15.0, 'Populations.RS.cellparams.b': 0.0, 'Populations.RS.cellparams.tau_w': 350.0, 'Populations.RS.cellparams.tau_m': 20.0, 'Populations.RS.cellparams.cm': 0.1}
+# 11-11-06-39
+#RS-{'Populations.RS.cellparams.a': 15.0, 'Populations.RS.cellparams.b': 0.0, 'Populations.RS.cellparams.tau_w': 150.0, 'Populations.RS.cellparams.tau_m': 20.0, 'Populations.RS.cellparams.cm': 0.15}
+#RS-{'Populations.RS.cellparams.a': 15.0, 'Populations.RS.cellparams.b': 0.0, 'Populations.RS.cellparams.tau_w': 150.0, 'Populations.RS.cellparams.tau_m': 30.0, 'Populations.RS.cellparams.cm': 0.1}
+#RS-{'Populations.RS.cellparams.a': 15.0, 'Populations.RS.cellparams.b': 0.0, 'Populations.RS.cellparams.tau_w': 150.0, 'Populations.RS.cellparams.tau_m': 30.0, 'Populations.RS.cellparams.cm': 0.15}
+#RS-{'Populations.RS.cellparams.a': 15.0, 'Populations.RS.cellparams.b': 0.0, 'Populations.RS.cellparams.tau_w': 150.0, 'Populations.RS.cellparams.tau_m': 30.0, 'Populations.RS.cellparams.cm': 0.18}
+#RS-{'Populations.RS.cellparams.a': 15.0, 'Populations.RS.cellparams.b': 0.0, 'Populations.RS.cellparams.tau_w': 250.0, 'Populations.RS.cellparams.tau_m': 20.0, 'Populations.RS.cellparams.cm': 0.15}
+#RS-{'Populations.RS.cellparams.a': 15.0, 'Populations.RS.cellparams.b': 0.0, 'Populations.RS.cellparams.tau_w': 250.0, 'Populations.RS.cellparams.tau_m': 30.0, 'Populations.RS.cellparams.cm': 0.1}
+#RS-{'Populations.RS.cellparams.a': 15.0, 'Populations.RS.cellparams.b': 0.0, 'Populations.RS.cellparams.tau_w': 250.0, 'Populations.RS.cellparams.tau_m': 30.0, 'Populations.RS.cellparams.cm': 0.15}
+#RS-{'Populations.RS.cellparams.a': 15.0, 'Populations.RS.cellparams.b': 0.0, 'Populations.RS.cellparams.tau_w': 250.0, 'Populations.RS.cellparams.tau_m': 30.0, 'Populations.RS.cellparams.cm': 0.18}
+#RS-{'Populations.RS.cellparams.a': 15.0, 'Populations.RS.cellparams.b': 0.0, 'Populations.RS.cellparams.tau_w': 250.0, 'Populations.RS.cellparams.tau_m': 30.0, 'Populations.RS.cellparams.cm': 0.15}
+#RS-{'Populations.RS.cellparams.a': 15.0, 'Populations.RS.cellparams.b': 0.0, 'Populations.RS.cellparams.tau_w': 350.0, 'Populations.RS.cellparams.tau_m': 20.0, 'Populations.RS.cellparams.cm': 0.15}
+#RS-{'Populations.RS.cellparams.a': 15.0, 'Populations.RS.cellparams.b': 0.0, 'Populations.RS.cellparams.tau_w': 350.0, 'Populations.RS.cellparams.tau_m': 30.0, 'Populations.RS.cellparams.cm': 0.2}
+#RS-{'Populations.RS.cellparams.a': 15.0, 'Populations.RS.cellparams.b': 0.0, 'Populations.RS.cellparams.tau_w': 350.0, 'Populations.RS.cellparams.tau_m': 30.0, 'Populations.RS.cellparams.cm': 0.15}
+#RS-{'Populations.RS.cellparams.a': 15.0, 'Populations.RS.cellparams.b': 0.0, 'Populations.RS.cellparams.tau_w': 450.0, 'Populations.RS.cellparams.tau_m': 30.0, 'Populations.RS.cellparams.cm': 0.18}
+#RS-{'Populations.RS.cellparams.a': 15.0, 'Populations.RS.cellparams.b': 0.0, 'Populations.RS.cellparams.tau_w': 550.0, 'Populations.RS.cellparams.tau_m': 20.0, 'Populations.RS.cellparams.cm': 0.15}
+#RS-{'Populations.RS.cellparams.a': 15.0, 'Populations.RS.cellparams.b': 0.0, 'Populations.RS.cellparams.tau_w': 550.0, 'Populations.RS.cellparams.tau_m': 30.0, 'Populations.RS.cellparams.cm': 0.22}
+#RS-{'Populations.RS.cellparams.a': 15.0, 'Populations.RS.cellparams.b': 0.0, 'Populations.RS.cellparams.tau_w': 600.0, 'Populations.RS.cellparams.tau_m': 20.0, 'Populations.RS.cellparams.cm': 0.15}
+#RS-{'Populations.RS.cellparams.a': 15.0, 'Populations.RS.cellparams.b': 0.0, 'Populations.RS.cellparams.tau_w': 600.0, 'Populations.RS.cellparams.tau_m': 30.0, 'Populations.RS.cellparams.cm': 0.2}
+#RS-{'Populations.RS.cellparams.a': 15.0, 'Populations.RS.cellparams.b': 0.0, 'Populations.RS.cellparams.tau_w': 600.0, 'Populations.RS.cellparams.tau_m': 30.0, 'Populations.RS.cellparams.cm': 0.22}
+
+#super
+#RS-{'Populations.RS.cellparams.a': 15.0, 'Populations.RS.cellparams.b': 0.01, 'Populations.RS.cellparams.tau_w': 150.0, 'Populations.RS.cellparams.tau_m': 20.0, 'Populations.RS.cellparams.cm': 0.1}
+#RS-{'Populations.RS.cellparams.a': 15.0, 'Populations.RS.cellparams.b': 0.01, 'Populations.RS.cellparams.tau_w': 250.0, 'Populations.RS.cellparams.tau_m': 20.0, 'Populations.RS.cellparams.cm': 0.1}
+
+
+
+
+#rebound burst no adaptation
 #RS-{'Populations.RS.cellparams.a': 5.0, 'Populations.RS.cellparams.b': 0.1, 'Populations.RS.cellparams.tau_w': 350.0, 'Populations.RS.cellparams.tau_m': 30.0, 'Populations.RS.cellparams.cm': 0.1}
+
+# 11-11-06-34
+#RS-{'Populations.RS.cellparams.a': 10.0, 'Populations.RS.cellparams.b': 0.0, 'Populations.RS.cellparams.tau_w': 150.0, 'Populations.RS.cellparams.tau_m': 20.0, 'Populations.RS.cellparams.cm': 0.1}
+#RS-{'Populations.RS.cellparams.a': 10.0, 'Populations.RS.cellparams.b': 0.0, 'Populations.RS.cellparams.tau_w': 150.0, 'Populations.RS.cellparams.tau_m': 30.0, 'Populations.RS.cellparams.cm': 0.1}
+
+# 11-11-06-35
+#RS-{'Populations.RS.cellparams.a': 10.0, 'Populations.RS.cellparams.b': 0.0, 'Populations.RS.cellparams.tau_w': 150.0, 'Populations.RS.cellparams.tau_m': 30.0, 'Populations.RS.cellparams.cm': 0.15}
+#RS-{'Populations.RS.cellparams.a': 10.0, 'Populations.RS.cellparams.b': 0.0, 'Populations.RS.cellparams.tau_w': 250.0, 'Populations.RS.cellparams.tau_m': 30.0, 'Populations.RS.cellparams.cm': 0.18}
+#RS-{'Populations.RS.cellparams.a': 10.0, 'Populations.RS.cellparams.b': 0.0, 'Populations.RS.cellparams.tau_w': 350.0, 'Populations.RS.cellparams.tau_m': 20.0, 'Populations.RS.cellparams.cm': 0.15}
+#RS-{'Populations.RS.cellparams.a': 10.0, 'Populations.RS.cellparams.b': 0.0, 'Populations.RS.cellparams.tau_w': 350.0, 'Populations.RS.cellparams.tau_m': 30.0, 'Populations.RS.cellparams.cm': 0.15}
+
+# 11-11-06-36
+#RS-{'Populations.RS.cellparams.a': 10.0, 'Populations.RS.cellparams.b': 0.01, 'Populations.RS.cellparams.tau_w': 250.0, 'Populations.RS.cellparams.tau_m': 20.0, 'Populations.RS.cellparams.cm': 0.15}
+#RS-{'Populations.RS.cellparams.a': 10.0, 'Populations.RS.cellparams.b': 0.01, 'Populations.RS.cellparams.tau_w': 350.0, 'Populations.RS.cellparams.tau_m': 20.0, 'Populations.RS.cellparams.cm': 0.15}
+#RS-{'Populations.RS.cellparams.a': 10.0, 'Populations.RS.cellparams.b': 0.01, 'Populations.RS.cellparams.tau_w': 350.0, 'Populations.RS.cellparams.tau_m': 30.0, 'Populations.RS.cellparams.cm': 0.2}
+#RS-{'Populations.RS.cellparams.a': 10.0, 'Populations.RS.cellparams.b': 0.01, 'Populations.RS.cellparams.tau_w': 450.0, 'Populations.RS.cellparams.tau_m': 30.0, 'Populations.RS.cellparams.cm': 0.18}
+#RS-{'Populations.RS.cellparams.a': 10.0, 'Populations.RS.cellparams.b': 0.01, 'Populations.RS.cellparams.tau_w': 550.0, 'Populations.RS.cellparams.tau_m': 20.0, 'Populations.RS.cellparams.cm': 0.15}
+#RS-{'Populations.RS.cellparams.a': 10.0, 'Populations.RS.cellparams.b': 0.01, 'Populations.RS.cellparams.tau_w': 550.0, 'Populations.RS.cellparams.tau_m': 30.0, 'Populations.RS.cellparams.cm': 0.15}
+#RS-{'Populations.RS.cellparams.a': 10.0, 'Populations.RS.cellparams.b': 0.01, 'Populations.RS.cellparams.tau_w': 550.0, 'Populations.RS.cellparams.tau_m': 30.0, 'Populations.RS.cellparams.cm': 0.18}
+#RS-{'Populations.RS.cellparams.a': 10.0, 'Populations.RS.cellparams.b': 0.01, 'Populations.RS.cellparams.tau_w': 600.0, 'Populations.RS.cellparams.tau_m': 20.0, 'Populations.RS.cellparams.cm': 0.15}
+#RS-{'Populations.RS.cellparams.a': 10.0, 'Populations.RS.cellparams.b': 0.01, 'Populations.RS.cellparams.tau_w': 600.0, 'Populations.RS.cellparams.tau_m': 30.0, 'Populations.RS.cellparams.cm': 0.15}
+#RS-{'Populations.RS.cellparams.a': 10.0, 'Populations.RS.cellparams.b': 0.01, 'Populations.RS.cellparams.tau_w': 600.0, 'Populations.RS.cellparams.tau_m': 30.0, 'Populations.RS.cellparams.cm': 0.18}
+
+
 
 
 
