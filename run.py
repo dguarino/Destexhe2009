@@ -49,14 +49,15 @@ def getValue(dic, keys):
 
 
 # ------------------------------------------------------------------------------
-usage_str = 'usage: run.py -p<param file>  -f<data folder> [-a]'
+usage_str = 'usage: run.py [-a] [-r] -p<param file> -f<data folder> [-s<search file>]'
 doAnalaysisOnly = False
 doParameterSearch = False
+removeDataFile = False
 data_folder = 'results'
 params_filename = ''
 
 try:
-    opts, args = getopt.getopt(sys.argv[1:], "haf:p:s:" )
+    opts, args = getopt.getopt(sys.argv[1:], "harf:p:s:" )
 except getopt.GetoptError:
     print usage_str,"error"
     sys.exit(2)
@@ -69,6 +70,9 @@ for opt, arg in opts:
     elif opt == '-a':
         print "Running analysis and plotting only ..."
         doAnalaysisOnly=True
+    elif opt == '-r':
+        print "Removing data files after analysis ..."
+        removeDataFile=True
     elif opt == '-f':
         data_folder = arg
         print "Data will be saved in:", data_folder
@@ -120,4 +124,4 @@ for i,comb in enumerate(combinations):
         h.save_data(Populations, data_folder, str(comb))
         end()
 
-    h.analyse(external.params, data_folder, str(comb))
+    h.analyse(external.params, data_folder, str(comb), removeDataFile)

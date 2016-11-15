@@ -115,7 +115,7 @@ def save_data(populations, folder, addon=''):
             p.write_data(folder+'/'+key+addon+'.pkl', annotations={'script_name': __file__})
 
 
-def analyse(params, folder='results', addon=''):
+def analyse(params, folder='results', addon='', removeDataFile=False):
     print "analysing data"
     # populations key-recorders match
     populations = {}
@@ -147,7 +147,7 @@ def analyse(params, folder='results', addon=''):
             fig = plot.figure()
             ylabel = key
             n,bins,patches = plot.hist(np.mean(vm,1),50)
-            fig.savefig(folder+'/'+key+'_hist.png')
+            fig.savefig(folder+'/Vm_histogram_'+key+addon+'.png')
 
         if 'gsyn_exc' in rec and 'gsyn_inh' in rec:
             gsyn_exc = data.filter(name="gsyn_exc")
@@ -158,7 +158,7 @@ def analyse(params, folder='results', addon=''):
             #Panel(rd.sample(data.spiketrains,100), xlabel="Time (ms)", xticks=True, markersize = 1)
             panels.append( Panel(data.spiketrains, xlabel="Time (ms)", xticks=True, markersize=1) )
 
-        Figure( *panels ).save(folder+'/'+key+".png")
+        Figure( *panels ).save(folder+'/'+key+addon+".png")
 
         # LFP
         if 'v' in rec and 'gsyn_exc' in rec:
@@ -169,7 +169,7 @@ def analyse(params, folder='results', addon=''):
             #print vm.shape
             fig = plot.figure()
             plot.plot(lfp)
-            fig.savefig(folder+'/'+key+'_lfp.png')
+            fig.savefig(folder+'/LFP_'+key+addon+'.png')
             fig.clear()
 
         ## metric supposed to characterize bimodality
@@ -181,7 +181,8 @@ def analyse(params, folder='results', addon=''):
         #print "score",prop_left*prop_right
 
         # for systems with low memory :)
-        #os.remove(folder+'/'+key+'.pkl')
+        if removeDataFile:
+            os.remove(folder+'/'+key+addon+'.pkl')
 
     return score
 

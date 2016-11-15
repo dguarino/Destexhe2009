@@ -13,7 +13,7 @@ params = {
     #'Populations.RS.cellparams.a': [.001, .01, .1, 1., 5., 10., 15., 23.], # 80nS BretteGerstner2005 figure 3D
     #'Populations.RS.cellparams.b': [0., .01, .1, 1. ], # 80nS BretteGerstner2005 figure 3D
 
-    'Populations.py.cellparams.b': [.01, .005],
+    'Populations.py.cellparams.b': [.005],
 
     #'Populations.re.cellparams.a': [20., 30., 40.], # 80nS BretteGerstner2005 figure 3D
     #'Populations.re.cellparams.b': [.01, .05, .1], # 80nS BretteGerstner2005 figure 3D
