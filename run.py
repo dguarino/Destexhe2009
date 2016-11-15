@@ -34,6 +34,7 @@ from numpy import *
 import matplotlib.pyplot as plot
 from pyNN.utility import Timer
 import sys, getopt
+import itertools as it
 
 import helpers as h
 
@@ -55,7 +56,7 @@ data_folder = 'results'
 params_filename = ''
 
 try:
-    opts, args = getopt.getopt(sys.argv[1:], "haf:p:" )
+    opts, args = getopt.getopt(sys.argv[1:], "haf:p:s:" )
 except getopt.GetoptError:
     print usage_str,"error"
     sys.exit(2)
