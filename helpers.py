@@ -120,23 +120,30 @@ def load_spikelist( filename, t_start=.0, t_stop=1. ):
     return spklist
 
 
-def analyse(populations, filename):
+def analyse(params, folder='results'):
     print "analysing data"
+    populations = {}
+    for popKey,popVal in params['Populations'].iteritems():
+        populations[popKey] = popVal
     pop_number = len(populations) - 1
     pop_index = 0
     score = {}
-    dt = datetime.now()
-    date = dt.strftime("%d-%m-%I-%M")
+
+    if folder=='results':
+        dt = datetime.now()
+        date = dt.strftime("%d-%m-%I-%M")
+        folder = folder+'/'+date
 
     for key,p in populations.iteritems():
         print key
         if key != 'ext':
             pop_index = pop_index + 1
             print pop_number,pop_index
-            neo = pickle.load( open('results/'+key+filename+'.pkl', "rb") )
+
+            neo = pickle.load( open(folder+'/'+key+'.pkl', "rb") )
             data = neo.segments[0]
 
-            vm = data.filter(name = 'v')[0]
+            #vm = data.filter(name = 'v')[0]
             #gsyn_exc = data.filter(name="gsyn_exc")
             #gsyn_inh = data.filter(name="gsyn_inh")
             #if not gsyn_exc:
@@ -145,12 +152,11 @@ def analyse(populations, filename):
             #    gsyn = gsyn_exc[0]
 
             Figure(
-                Panel(vm, ylabel="Membrane potential (mV)", xlabel="Time (ms)", xticks=True, yticks=True, legend=None),
+                #Panel(vm, ylabel="Membrane potential (mV)", xlabel="Time (ms)", xticks=True, yticks=True, legend=None),
                 #Panel(gsyn,ylabel = "Synaptic conductance (uS)",xlabel="Time (ms)", xticks=True,legend = None),
                 #Panel(rd.sample(data.spiketrains,100), xlabel="Time (ms)", xticks=True, markersize = 1)
                 Panel(data.spiketrains, xlabel="Time (ms)", xticks=True, markersize=1)
-             ).save('results/'+date+'/'+key+'-'+filename+".png")
-
+            ).save(folder+'/'+key+".png")
 
             #fig = plot.figure(2)
             #plot.subplot(pop_number,1,pop_index)
@@ -166,12 +172,40 @@ def analyse(populations, filename):
             #print "prop_left",prop_left, "prop_right",prop_right
             #print "score",prop_left*prop_right
 
-            #if pop_index == pop_number :
-            #    fig.clear()
+            if pop_index == pop_number :
+                fig.clear()
+
+            if key == 'py':
+                lfp = compute_LFP(data)
+                lfp = lfp.reshape((50001,1))
+                print lfp.shape
+                vm = data.filter(name = 'v')[0]
+                print vm.shape
+                fig = plot.figure(1)
+                plot.plot(lfp)
+                fig.savefig(folder+'/'+'lfp.png')
+                fig.clear()
 
             #TODO ; add parameter file to the result folder
 
             # for systems with low memory :)
-            os.remove('results/'+key+filename+'.pkl')
+            #os.remove('results/'+key+filename+'.pkl')
 
     return score
+
+
+def compute_LFP(data):
+    v = data.filter(name="v")[0]
+    g = data.filter(name="gsyn_exc")[0]
+    # We produce the current for each cell for this time interval, with the Ohm law:
+    # I = g(V-E), where E is the equilibrium for exc, which usually is 0.0 (we can change it)
+    # (and we also have to consider inhibitory condictances)
+    #print 'v', v
+    i = g*(v) #AMPA
+    #print 'i',i
+    # the LFP is the result of cells' currents
+    avg_i_by_t = numpy.sum(i,axis=1)/i.shape[0] #
+    #print 'avg',len(avg_i_by_t)
+    sigma = 0.1 # [0.1, 0.01] # Dobiszewski_et_al2012.pdf
+    lfp = (1/(4*numpy.pi*sigma)) *  avg_i_by_t
+    return lfp
