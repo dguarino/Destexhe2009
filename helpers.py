@@ -1,3 +1,30 @@
+"""
+Copyright (c) 2016, Domenico GUARINO, Eloise SOULIER
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+    * Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright
+      notice, this list of conditions and the following disclaimer in the
+      documentation and/or other materials provided with the distribution.
+    * Neither the name of the <organization> nor the
+      names of its contributors may be used to endorse or promote products
+      derived from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL GUARINO AND SOULIER BE LIABLE FOR ANY
+DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+"""
+
 import NeuroTools.signals
 import numpy as np
 import random as rd
@@ -80,13 +107,100 @@ def run_simulation(params):
     print "Simulation Time: %s" % str(simCPUtime)
 
 
-def save_data(populations, addon=''):
+def save_data(populations, folder, addon=''):
     print "saving data"
     for key,p in populations.iteritems():
         if key != 'ext':
             data = p.get_data()
-            p.write_data('results/'+key+addon+'.pkl', annotations={'script_name': __file__})
+            p.write_data(folder+'/'+key+addon+'.pkl', annotations={'script_name': __file__})
 
+
+def analyse(params, folder='results', addon=''):
+    print "analysing data"
+    # populations key-recorders match
+    populations = {}
+    for popKey,popVal in params['Populations'].iteritems():
+        if popKey != 'ext':
+            populations[popKey] = params['Recorders'][popKey].keys()
+            print popKey, populations[popKey]
+
+    score = {}
+
+    # default results name folder
+    if folder=='results':
+        dt = datetime.now()
+        date = dt.strftime("%d-%m-%I-%M")
+        folder = folder+'/'+date
+
+    # iteration over populations and selctive plotting based on available recorders
+    for key,rec in populations.iteritems():
+        print key
+
+        neo = pickle.load( open(folder+'/'+key+addon+'.pkl', "rb") )
+        data = neo.segments[0]
+
+        panels = []
+        if 'v' in rec:
+            vm = data.filter(name = 'v')[0]
+            panels.append( Panel(vm, ylabel="Membrane potential (mV)", xlabel="Time (ms)", xticks=True, yticks=True, legend=None) )
+            # Vm histogram
+            fig = plot.figure()
+            ylabel = key
+            n,bins,patches = plot.hist(np.mean(vm,1),50)
+            fig.savefig(folder+'/'+key+'_hist.png')
+
+        if 'gsyn_exc' in rec and 'gsyn_inh' in rec:
+            gsyn_exc = data.filter(name="gsyn_exc")
+            gsyn_inh = data.filter(name="gsyn_inh")
+            panels.append( Panel(gsyn,ylabel = "Synaptic conductance (uS)",xlabel="Time (ms)", xticks=True,legend = None) )
+
+        if 'spikes' in rec:
+            #Panel(rd.sample(data.spiketrains,100), xlabel="Time (ms)", xticks=True, markersize = 1)
+            panels.append( Panel(data.spiketrains, xlabel="Time (ms)", xticks=True, markersize=1) )
+
+        Figure( *panels ).save(folder+'/'+key+".png")
+
+        # LFP
+        if 'v' in rec and 'gsyn_exc' in rec:
+            lfp = compute_LFP(data)
+            lfp = lfp.reshape((50001,1))
+            #print lfp.shape
+            vm = data.filter(name = 'v')[0]
+            #print vm.shape
+            fig = plot.figure()
+            plot.plot(lfp)
+            fig.savefig(folder+'/'+key+'_lfp.png')
+            fig.clear()
+
+        ## metric supposed to characterize bimodality
+        #bins = bins[:-1]
+        #prop_left = sum([n[i] for i,data in enumerate(bins) if bins[i]<(np.mean(vm)-np.std(vm)/2)])/sum(n)
+        #prop_right = sum([n[i] for i,data in enumerate(bins) if bins[i]>(np.mean(vm)+np.std(vm)/2)])/sum(n)
+        #score[key] = float("{0:.2f}".format(prop_left*prop_right))
+        #print "prop_left",prop_left, "prop_right",prop_right
+        #print "score",prop_left*prop_right
+
+        # for systems with low memory :)
+        #os.remove(folder+'/'+key+'.pkl')
+
+    return score
+
+
+def compute_LFP(data):
+    v = data.filter(name="v")[0]
+    g = data.filter(name="gsyn_exc")[0]
+    # We produce the current for each cell for this time interval, with the Ohm law:
+    # I = g(V-E), where E is the equilibrium for exc, which usually is 0.0 (we can change it)
+    # (and we also have to consider inhibitory condictances)
+    #print 'v', v
+    i = g*(v) #AMPA
+    #print 'i',i
+    # the LFP is the result of cells' currents
+    avg_i_by_t = numpy.sum(i,axis=1)/i.shape[0] #
+    #print 'avg',len(avg_i_by_t)
+    sigma = 0.1 # [0.1, 0.01] # Dobiszewski_et_al2012.pdf
+    lfp = (1/(4*numpy.pi*sigma)) * avg_i_by_t
+    return lfp
 
 
 def plot_spiketrains(segment):
@@ -118,94 +232,3 @@ def load_spikelist( filename, t_start=.0, t_stop=1. ):
 
     spklist = SpikeList(spiketrains, range(len(neo_spikes)), t_start=t_start, t_stop=t_stop)
     return spklist
-
-
-def analyse(params, folder='results'):
-    print "analysing data"
-    populations = {}
-    for popKey,popVal in params['Populations'].iteritems():
-        populations[popKey] = popVal
-    pop_number = len(populations) - 1
-    pop_index = 0
-    score = {}
-
-    if folder=='results':
-        dt = datetime.now()
-        date = dt.strftime("%d-%m-%I-%M")
-        folder = folder+'/'+date
-
-    for key,p in populations.iteritems():
-        print key
-        if key != 'ext':
-            pop_index = pop_index + 1
-            print pop_number,pop_index
-
-            neo = pickle.load( open(folder+'/'+key+'.pkl', "rb") )
-            data = neo.segments[0]
-
-            #vm = data.filter(name = 'v')[0]
-            #gsyn_exc = data.filter(name="gsyn_exc")
-            #gsyn_inh = data.filter(name="gsyn_inh")
-            #if not gsyn_exc:
-            #    gsyn = gsyn_inh[0]
-            #else:
-            #    gsyn = gsyn_exc[0]
-
-            Figure(
-                #Panel(vm, ylabel="Membrane potential (mV)", xlabel="Time (ms)", xticks=True, yticks=True, legend=None),
-                #Panel(gsyn,ylabel = "Synaptic conductance (uS)",xlabel="Time (ms)", xticks=True,legend = None),
-                #Panel(rd.sample(data.spiketrains,100), xlabel="Time (ms)", xticks=True, markersize = 1)
-                Panel(data.spiketrains, xlabel="Time (ms)", xticks=True, markersize=1)
-            ).save(folder+'/'+key+".png")
-
-            #fig = plot.figure(2)
-            #plot.subplot(pop_number,1,pop_index)
-            #ylabel = key
-            #n,bins,patches = plot.hist(np.mean(vm,1),50)
-            #fig.savefig('results/'+date+'/'+filename+'hist.png')
-
-            ## metric supposed to characterize bimodality
-            #bins = bins[:-1]
-            #prop_left = sum([n[i] for i,data in enumerate(bins) if bins[i]<(np.mean(vm)-np.std(vm)/2)])/sum(n)
-            #prop_right = sum([n[i] for i,data in enumerate(bins) if bins[i]>(np.mean(vm)+np.std(vm)/2)])/sum(n)
-            #score[key] = float("{0:.2f}".format(prop_left*prop_right))
-            #print "prop_left",prop_left, "prop_right",prop_right
-            #print "score",prop_left*prop_right
-
-            if pop_index == pop_number :
-                fig.clear()
-
-            if key == 'py':
-                lfp = compute_LFP(data)
-                lfp = lfp.reshape((50001,1))
-                print lfp.shape
-                vm = data.filter(name = 'v')[0]
-                print vm.shape
-                fig = plot.figure(1)
-                plot.plot(lfp)
-                fig.savefig(folder+'/'+'lfp.png')
-                fig.clear()
-
-            #TODO ; add parameter file to the result folder
-
-            # for systems with low memory :)
-            #os.remove('results/'+key+filename+'.pkl')
-
-    return score
-
-
-def compute_LFP(data):
-    v = data.filter(name="v")[0]
-    g = data.filter(name="gsyn_exc")[0]
-    # We produce the current for each cell for this time interval, with the Ohm law:
-    # I = g(V-E), where E is the equilibrium for exc, which usually is 0.0 (we can change it)
-    # (and we also have to consider inhibitory condictances)
-    #print 'v', v
-    i = g*(v) #AMPA
-    #print 'i',i
-    # the LFP is the result of cells' currents
-    avg_i_by_t = numpy.sum(i,axis=1)/i.shape[0] #
-    #print 'avg',len(avg_i_by_t)
-    sigma = 0.1 # [0.1, 0.01] # Dobiszewski_et_al2012.pdf
-    lfp = (1/(4*numpy.pi*sigma)) *  avg_i_by_t
-    return lfp
