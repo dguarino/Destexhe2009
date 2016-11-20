@@ -13,7 +13,7 @@ def area(sec):
 
 h.load_file("nrngui.hoc")
 
-h.dt = 0.1 # ms timestep
+h.dt = 0.001 # ms timestep
 h.steps_per_ms = 1.0/0.1
 tstart = 0
 h.tstop = 1000
@@ -58,14 +58,18 @@ soma.delta_IF_BG4    = 2.5
 soma.surf_IF_BG4     = area(soma)
 
 # Relevant parameters
-soma.a_IF_BG4        = .001 # figure 1A
-soma.b_IF_BG4        = 0.04 # figure 1A
-soma.b_IF_BG4        = 0.02 # figure 1B
-soma.b_IF_BG4        = 0.0075 # figure 1C
+soma.a_IF_BG4        = .001 # figure 1ABC Destexhe2009
+soma.a_IF_BG4        = .02 # figure 1D Destexhe2009
+
+soma.b_IF_BG4        = 0.04     # figure 1A
+soma.b_IF_BG4        = 0.005    # figure 1B Destexhe2009
+soma.b_IF_BG4        = 0.02     # figure 1B
+soma.b_IF_BG4        = 0.0      # figure 1CD Destexhe2009
+#soma.b_IF_BG4        = 0.0075   # figure 1C
 
 # stimulation
 stim = h.IClamp(0.5, sec=soma)
-stim.amp = .25 # nA
+stim.amp = -.25 # nA
 stim.delay = 200.0 # ms
 stim.dur = 400.0 ## Some float
 
@@ -86,4 +90,4 @@ pyplot.figure(figsize=(8,4)) # Default figsize is (8,6)
 pyplot.plot(t_vec, v_vec)
 pyplot.xlabel('time (ms)')
 pyplot.ylabel('mV')
-pyplot.savefig('test.png')
+pyplot.savefig('figure1.png')
