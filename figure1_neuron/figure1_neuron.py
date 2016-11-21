@@ -89,15 +89,6 @@ t_vec.record( h._ref_t )
 h.init()
 h.run()
 
-# ------------------------------------------------------------------------------
-# plotting
-from matplotlib import pyplot
-pyplot.figure(figsize=(8,4)) # Default figsize is (8,6)
-pyplot.plot(t_vec, v_vec)
-pyplot.xlabel('time (ms)')
-pyplot.ylabel('mV')
-pyplot.savefig('figure1.png')
-
 with open('t_vec.p', 'w') as t_vec_file:
     pickle.dump(t_vec.to_python(), t_vec_file)
 with open('v_vec.p', 'w') as v_vec_file:
@@ -107,3 +98,12 @@ with open('v_vec.p', 'w') as v_vec_file:
 #with open('v_vec.p') as vec_file:
 #    py_v_vec = pickle.load(vec_file)
 #    #print py_v_vec
+
+# ------------------------------------------------------------------------------
+# plotting
+from matplotlib import pyplot
+pyplot.figure(figsize=(8,4)) # Default figsize is (8,6)
+pyplot.plot(t_vec, v_vec)
+pyplot.xlabel('time (ms)')
+pyplot.ylabel('mV')
+pyplot.savefig('figure1.png')
