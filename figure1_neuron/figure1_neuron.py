@@ -7,13 +7,14 @@
 
 from neuron import h, nrn, gui
 from math import sqrt, pi
+import pickle
 
 def area(sec):
     return sec.L * sec.diam * pi
 
 h.load_file("nrngui.hoc")
 
-h.dt = 0.001 # ms timestep
+h.dt = 0.1 # ms timestep
 h.steps_per_ms = 1.0/0.1
 tstart = 0
 h.tstop = 1000
@@ -47,6 +48,7 @@ soma.L               = LENGTH # 20000 um^2
 soma.diam            = DIAMETER
 soma.e_pas           = V_REST
 soma.g_pas           = G_L
+
 soma.Vtr_IF_BG4      = VTR
 soma.Ref_IF_BG4      = REFRACTORY
 soma.Vtop_IF_BG4     = VTOP
@@ -57,19 +59,23 @@ soma.GL_IF_BG4       = soma.g_pas
 soma.delta_IF_BG4    = 2.5
 soma.surf_IF_BG4     = area(soma)
 
-# Relevant parameters
+# Relevant parameters to reproduce figure1
 soma.a_IF_BG4        = .001 # figure 1ABC Destexhe2009
 soma.a_IF_BG4        = .02 # figure 1D Destexhe2009
+soma.a_IF_BG4        = .04 # figure 1E Destexhe2009
+soma.a_IF_BG4        = .08 # figure 1F Destexhe2009
 
 soma.b_IF_BG4        = 0.04     # figure 1A
 soma.b_IF_BG4        = 0.005    # figure 1B Destexhe2009
-soma.b_IF_BG4        = 0.02     # figure 1B
+soma.b_IF_BG4        = 0.02     # figure 1B closer to figure
 soma.b_IF_BG4        = 0.0      # figure 1CD Destexhe2009
-#soma.b_IF_BG4        = 0.0075   # figure 1C
+soma.b_IF_BG4        = 0.03     # figure 1F Destexhe2009
+#soma.b_IF_BG4        = 0.0075   # figure 1C closer to figure
 
 # stimulation
 stim = h.IClamp(0.5, sec=soma)
-stim.amp = -.25 # nA
+stim.amp = -.25 # Destexhe2009
+stim.amp = .25 # nA
 stim.delay = 200.0 # ms
 stim.dur = 400.0 ## Some float
 
@@ -91,3 +97,13 @@ pyplot.plot(t_vec, v_vec)
 pyplot.xlabel('time (ms)')
 pyplot.ylabel('mV')
 pyplot.savefig('figure1.png')
+
+with open('t_vec.p', 'w') as t_vec_file:
+    pickle.dump(t_vec.to_python(), t_vec_file)
+with open('v_vec.p', 'w') as v_vec_file:
+    pickle.dump(v_vec.to_python(), v_vec_file)
+
+# check saved data
+#with open('v_vec.p') as vec_file:
+#    py_v_vec = pickle.load(vec_file)
+#    #print py_v_vec
