@@ -65,12 +65,12 @@ soma.a_IF_BG4        = .02 # figure 1D Destexhe2009
 soma.a_IF_BG4        = .04 # figure 1E Destexhe2009
 soma.a_IF_BG4        = .08 # figure 1F Destexhe2009
 
-soma.b_IF_BG4        = 0.04     # figure 1A
-soma.b_IF_BG4        = 0.005    # figure 1B Destexhe2009
-soma.b_IF_BG4        = 0.02     # figure 1B closer to figure
-soma.b_IF_BG4        = 0.0      # figure 1CD Destexhe2009
-soma.b_IF_BG4        = 0.03     # figure 1F Destexhe2009
-#soma.b_IF_BG4        = 0.0075   # figure 1C closer to figure
+soma.b_IF_BG4        = .04     # figure 1A
+soma.b_IF_BG4        = .005    # figure 1B Destexhe2009
+soma.b_IF_BG4        = .02     # figure 1B closer to figure
+soma.b_IF_BG4        = .0      # figure 1CD Destexhe2009
+soma.b_IF_BG4        = .03     # figure 1F Destexhe2009
+#soma.b_IF_BG4        = .0075   # figure 1C closer to figure
 
 # stimulation
 stim = h.IClamp(0.5, sec=soma)

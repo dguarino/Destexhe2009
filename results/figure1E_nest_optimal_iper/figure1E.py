@@ -11,7 +11,6 @@ params = {
             'n': 1, # units
             'type': EIF_cond_alpha_isfa_ista,
             'cellparams': {
-                # tau_m = C/gleak, BretteGerstner2005: 0.281 nF / 30 nS = .0009
                 'tau_m'      : 30.0,  # ms, time constant of leak conductance
                 'tau_syn_E'  : 5.0,   # ms, time constant of exponential decay of conductance shift
                 'tau_syn_I'  : 10.0,  # ms, as above
@@ -19,6 +18,7 @@ params = {
                 'v_rest'     : -60.0, # mV, resting potential
                 'v_reset'    : -60.0, # mV, reset after spike
                 'v_thresh'   : -50.0, # mV, spike threshold
+                'v_peak'     : 40.0,  # mV, spike detection point
                 'delta_T'    : 2.5,   # mV, steepness of exponential approach to threshold
                 'tau_w'      : 150.0, # ms, time constant of adaptation variable
                 'cm'         : 0.15, # nF, 1 uF/cm^2 with 20000 um^2 is the membrane area

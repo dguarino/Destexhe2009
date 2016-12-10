@@ -17,13 +17,13 @@ params = {
                 'tau_refrac' : 2.5,   # ms, refractory period
                 'v_rest'     : -60.0, # mV, resting potential
                 'v_reset'    : -60.0, # mV, reset after spike
-                'v_thresh'   : -50.0, # mV, spike threshold
+                'v_thresh'   : -50.0,   # mV, spike threshold
                 'delta_T'    : 2.5,   # mV, steepness of exponential approach to threshold
                 'tau_w'      : 600.0, # ms, time constant of adaptation variable
                 'cm'         : 0.200, # nF, 1 uF/cm^2 with 20000 um^2 is the membrane area
                 'a'          : 0.001, # uS, spike-frequency adaptation
-                'b'          : .1,   # !!!!!! nA, increment to the adaptation variable
-                'i_offset'   : 0.25,  # nA, constant injected current
+                'b'          : .1,   # nA, increment to the adaptation variable
+                #'i_offset'   : 0.25,  # nA, constant injected current
             }
         },
     },
@@ -32,7 +32,12 @@ params = {
     },
 
     'Injections' : {
-    #    'RS' : DCSource( amplitude=0.5, start=30.0, stop=70.0 ),
+        'RS' : {
+            'source' : DCSource,
+            'amplitude' : .25,
+            'start' : 20.0,
+            'stop' : 420.0
+        },
     },
 
     'Recorders' : {

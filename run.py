@@ -28,6 +28,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import NeuroTools.signals
 import numpy.random
 import os
+import csv
 import shutil
 from pyNN.nest import *
 from numpy import *
@@ -49,7 +50,7 @@ def getValue(dic, keys):
 
 
 # ------------------------------------------------------------------------------
-usage_str = 'usage: run.py [-a] [-r] -p<param file> -f<data folder> [-s<search file>]'
+usage_str = 'usage: run.py [-a] [-r] -f<data folder> -p<param file> [-s<search file>]'
 doAnalaysisOnly = False
 doParameterSearch = False
 removeDataFile = False
@@ -98,10 +99,11 @@ if doParameterSearch:
     # each dict being the joining of one of the testKey and a value testVal
     # each testVal is produced by internal product of all array in testParams
     combinations = [dict(zip(testParams, testVal)) for testVal in it.product(*(search.params[testKey] for testKey in testParams))]
-    print len(combinations),combinations # to be commented
+    #print len(combinations),combinations # to be commented
 
 
 # run combinations
+info = []
 for i,comb in enumerate(combinations):
     print "param combination",i
     print "current set:",comb
@@ -124,4 +126,18 @@ for i,comb in enumerate(combinations):
         h.save_data(Populations, data_folder, str(comb))
         end()
 
-    h.analyse(external.params, data_folder, str(comb), removeDataFile)
+    scores = h.analyse(external.params, data_folder, str(comb), removeDataFile)
+    # map storage of scores
+    if doParameterSearch:
+        if i == 0:
+            with open(data_folder+'/map.csv', 'wb') as csvfile:
+                fh = csv.writer(csvfile)
+                fh.writerow( ['#'+str(testParams[1])+ ':' +str(search.params[testParams[1]]) ] )
+                fh.writerow( ['#'+str(testParams[0])+ ':' +str(search.params[testParams[0]]) ] )
+
+        info.append(scores['CV'])
+        if (i+1)%len(search.params[testParams[1]]) == 0:
+            with open(data_folder+'/map.csv', 'a') as csvfile:
+                fh = csv.writer(csvfile)
+                fh.writerow(info)
+                info = []

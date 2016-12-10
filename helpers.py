@@ -124,7 +124,7 @@ def analyse(params, folder='results', addon='', removeDataFile=False):
             populations[popKey] = params['Recorders'][popKey].keys()
             print popKey, populations[popKey]
 
-    score = {}
+    scores = {}
 
     # default results name folder
     if folder=='results':
@@ -149,25 +149,28 @@ def analyse(params, folder='results', addon='', removeDataFile=False):
             n,bins,patches = plot.hist(np.mean(vm,1),50)
             fig.savefig(folder+'/Vm_histogram_'+key+addon+'.png')
 
-        if 'gsyn_exc' in rec and 'gsyn_inh' in rec:
-            gsyn_exc = data.filter(name="gsyn_exc")
-            gsyn_inh = data.filter(name="gsyn_inh")
-            panels.append( Panel(gsyn,ylabel = "Synaptic conductance (uS)",xlabel="Time (ms)", xticks=True,legend = None) )
+        if 'gsyn_exc' in rec:
+            gsyn_exc = data.filter(name="gsyn_exc")[0]
+            panels.append( Panel(gsyn_exc,ylabel = "Exc Synaptic conductance (uS)",xlabel="Time (ms)", xticks=True,legend = None) )
+
+        if 'gsyn_inh' in rec:
+            gsyn_inh = data.filter(name="gsyn_inh")[0]
+            panels.append( Panel(gsyn_inh,ylabel = "Inh Synaptic conductance (uS)",xlabel="Time (ms)", xticks=True,legend = None) )
 
         if 'spikes' in rec:
-            #Panel(rd.sample(data.spiketrains,100), xlabel="Time (ms)", xticks=True, markersize = 1)
             panels.append( Panel(data.spiketrains, xlabel="Time (ms)", xticks=True, markersize=1) )
+            # ISI
+            scores['ISI'] = isi(data.spiketrains)
+            print "ISI:", scores['ISI']
+            scores['CV'] = cv(data.spiketrains)
+            print "CVisi:", scores['CV']
+            #print "Adaptation Index:",compute_adaptation_index(data)
             # firing rate
             fr = rate(params, data.spiketrains, bin_size=10)
-            if key == 'py':
-                threshold = np.max(fr)/2
-                normfr = fr - threshold
-                uptime = len([val for val in normfr if val >0])
-                downtime = len([val for val in normfr if val < 0])
-                ratio = uptime/downtime
-                #print 'ratio', ratio
+            # ratio (and additions to figure)
             fig = plot.figure(56)
-            plot.plot(fr)
+            plot.plot(fr,linewidth=2)
+            plot.ylim([.0,1.])
             fig.savefig(folder+'/firingrate_'+key+addon+'.png')
             fig.clear()
 
@@ -176,7 +179,7 @@ def analyse(params, folder='results', addon='', removeDataFile=False):
         # LFP
         if 'v' in rec and 'gsyn_exc' in rec:
             lfp = compute_LFP(data)
-            lfp = lfp.reshape((50001,1))
+            lfp = lfp.reshape(((params['run_time']/params['dt'])+1,1))
             #print lfp.shape
             vm = data.filter(name = 'v')[0]
             #print vm.shape
@@ -189,15 +192,15 @@ def analyse(params, folder='results', addon='', removeDataFile=False):
         #bins = bins[:-1]
         #prop_left = sum([n[i] for i,data in enumerate(bins) if bins[i]<(np.mean(vm)-np.std(vm)/2)])/sum(n)
         #prop_right = sum([n[i] for i,data in enumerate(bins) if bins[i]>(np.mean(vm)+np.std(vm)/2)])/sum(n)
-        #score[key] = float("{0:.2f}".format(prop_left*prop_right))
+        #scores[key] = float("{0:.2f}".format(prop_left*prop_right))
         #print "prop_left",prop_left, "prop_right",prop_right
-        #print "score",prop_left*prop_right
+        #print "scores",prop_left*prop_right
 
         # for systems with low memory :)
         if removeDataFile:
             os.remove(folder+'/'+key+addon+'.pkl')
 
-    return score
+    return scores
 
 
 def compute_LFP(data):
@@ -217,20 +220,24 @@ def compute_LFP(data):
     return lfp
 
 
-def plot_spiketrains(segment):
-    for spiketrain in segment.spiketrains:
-        y = np.ones_like(spiketrain) * spiketrain.annotations['source_id']
-        plot.plot(spiketrain, y,linestyle='dashed', marker='o',markersize =1)
-        plot.ylabel(segment.name)
-        plot.setp(plot.gca().get_xticklabels(), visible=False)
+def compute_adaptation_index(data):
+    # from NaudMarcilleClopathGerstner2008
+    k = 2
+    st = data.spiketrains
+    #print st
+    if st == []:
+        return None
+    # ISI
+    isi = numpy.diff(st)
+    #print isi
+    running_sum = 0
+    for i,interval in enumerate(isi):
+        if i < k:
+            continue
+        print i, interval
+        running_sum = running_sum + ( (isi[i]-isi[i-1]) / (isi[i]+isi[i-1]) )
+    return running_sum / len(isi)-k-1
 
-
-def plot_signal(signal, index, colour='b'):
-    label = "Neuron %d" % signal.annotations['source_ids'][index]
-    plt.plot(signal.times, signal[:, index], colour, label=label)
-    plt.ylabel("%s (%s)" % (signal.name, signal.units._dimensionality.string))
-    plt.setp(plt.gca().get_xticklabels(), visible=False)
-    plt.legend()
 
 
 def load_spikelist( filename, t_start=.0, t_stop=1. ):
@@ -248,6 +255,7 @@ def load_spikelist( filename, t_start=.0, t_stop=1. ):
     return spklist
 
 
+
 def rate( params, spiketrains, bin_size=10 ):
     """
     Binned-time Firing firing rate
@@ -262,3 +270,23 @@ def rate( params, spiketrains, bin_size=10 ):
     for spike_times in spiketrains:
         hist = hist + np.histogram( spike_times, bin_edges )[0]
     return hist / len(spiketrains)
+
+
+
+def isi( spiketrains ):
+    """
+    Inter-Spike Intervals histogram for all spiketrains
+    """
+    if spiketrains == [] :
+        return None
+    return np.diff( spiketrains )
+
+
+
+def cv( spiketrains ):
+    """
+    Coefficient of variation
+    """
+    if spiketrains == [] :
+        return None
+    return np.std(isi(spiketrains)) / np.mean(isi(spiketrains))

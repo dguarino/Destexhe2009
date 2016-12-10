@@ -1,3 +1,4 @@
+import numpy as np
 
 params = {
     #'run_time' : [5000],
@@ -8,20 +9,19 @@ params = {
     #'Populations.LTS.cellparams.b': [-1., -.5, -.1, -.05, 0., .05, .1, .5, .1],
 
     #'Populations.RS.cellparams.tau_m': [20., 30.], # 80nS BretteGerstner2005 figure 3D
-    #'Populations.RS.cellparams.tau_w': [150., 250., 350., 450., 550., 600.], # 80nS BretteGerstner2005 figure 3D
-    #'Populations.RS.cellparams.cm': [.1, .15, .18, .20, .22], # 80nS BretteGerstner2005 figure 3D
-    #'Populations.RS.cellparams.a': [.001, .01, .1, 1., 5., 10., 15., 23.], # 80nS BretteGerstner2005 figure 3D
-    #'Populations.RS.cellparams.b': [0., .01, .1, 1. ], # 80nS BretteGerstner2005 figure 3D
+    #'Populations.cell.cellparams.tau_w': [150., 250., 350., 450., 550., 650.], # 80nS BretteGerstner2005 figure 3D
+    #'Populations.cell.cellparams.cm': [.1, .15, .18, .20, .22], # 80nS BretteGerstner2005 figure 3D
 
-    'Populations.py.cellparams.b': [.005],
+    'Populations.cell.cellparams.b': np.arange(.0, 1, .005),
+    'Populations.cell.cellparams.a': np.arange(.0, 1, .005),
 
-    #'Populations.re.cellparams.a': [20., 30., 40.], # 80nS BretteGerstner2005 figure 3D
-    #'Populations.re.cellparams.b': [.01, .05, .1], # 80nS BretteGerstner2005 figure 3D
+    # search Thalamic to be confronted with the SlowDyn project TC results
+    #'Populations.cell.cellparams.b':[-0.05,-0.04,-0.03,-0.02,-0.01,0.,0.01,0.02,0.03,0.04,0.05],
+    #'Populations.cell.cellparams.a' : [8.,9.,10.,11.,12.,13.,14.,15.,16.,17.],
 
-    #'Projections.ext_tc.weight' : [30e-3, 60e-3],
-    #'Projections.tc_re.weight' : [30e-3, 60e-3],
-    #'Projections.re_tc.weight' : [30e-3, 60e-3],
-    #'Projections.re_re.weight' : [30e-3, 60e-3],
+    # search Reticular to be confronted with the SlowDyn project TC results
+    #'Populations.cell.cellparams.b':[-0.04,-0.03,-0.02,-0.01,0.,0.01,0.02,0.03,0.04,0.05,0.06],
+    #'Populations.cell.cellparams.a' : [20.,22.,24.,26.,28.,30.,32.,34.,36.,38.,40.],
 
 }
 
