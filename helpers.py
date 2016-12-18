@@ -164,15 +164,27 @@ def analyse(params, folder='results', addon='', removeDataFile=False):
             print "ISI:", scores['ISI']
             scores['CV'] = cv(data.spiketrains)
             print "CVisi:", scores['CV']
-            #print "Adaptation Index:",compute_adaptation_index(data)
             # firing rate
             fr = rate(params, data.spiketrains, bin_size=10)
-            # ratio (and additions to figure)
             fig = plot.figure(56)
             plot.plot(fr,linewidth=2)
             plot.ylim([.0,1.])
             fig.savefig(folder+'/firingrate_'+key+addon+'.png')
             fig.clear()
+
+        if params['Injections']:
+            amplitude = np.array([0.]+params['Injections']['LTS']['amplitude']+[0.])#[0.,-.25, 0.0, .25, 0.0, 0.]
+            start = np.array([0.]+params['Injections']['LTS']['start']+[params['run_time']])/params['dt']
+            current = np.array([])
+
+            for i in range(1,len(amplitude)):
+                if current.shape == (0,):
+                    current = np.ones((start[i]-start[i-1]+1,1))*amplitude[i-1]
+                else:
+                    current = np.concatenate((current,np.ones((start[i]-start[i-1],1))*amplitude[i-1]),0)
+            current = AnalogSignalArray(current, units = 'mA',sampling_rate = params['dt']*pq.Hz)
+            current.channel_index = np.array([0])
+            panels.append( Panel(current,ylabel = "Current injection (mA)",xlabel="Time (ms)", xticks=True, legend=None) )
 
         Figure( *panels ).save(folder+'/'+key+addon+".png")
 
