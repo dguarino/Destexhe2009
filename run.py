@@ -135,7 +135,7 @@ for i,comb in enumerate(combinations):
                 fh.writerow( ['#'+str(testParams[1])+ ':' +str(search.params[testParams[1]]) ] )
                 fh.writerow( ['#'+str(testParams[0])+ ':' +str(search.params[testParams[0]]) ] )
 
-        info.append(scores['CV'])
+        info.append(scores.values())
         if (i+1)%len(search.params[testParams[1]]) == 0:
             with open(data_folder+'/map.csv', 'a') as csvfile:
                 fh = csv.writer(csvfile)

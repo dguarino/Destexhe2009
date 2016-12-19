@@ -12,12 +12,12 @@ params = {
     #'Populations.cell.cellparams.tau_w': [150., 250., 350., 450., 550., 650.], # 80nS BretteGerstner2005 figure 3D
     #'Populations.cell.cellparams.cm': [.1, .15, .18, .20, .22], # 80nS BretteGerstner2005 figure 3D
 
-    'Populations.cell.cellparams.b': np.arange(.0, 1, .005),
-    'Populations.cell.cellparams.a': np.arange(.0, 1, .005),
+    'Populations.cell.cellparams.a': np.arange(1., 30., 2.),
+    'Populations.cell.cellparams.b': np.arange(.0, .4, .03),
 
     # search Thalamic to be confronted with the SlowDyn project TC results
-    #'Populations.cell.cellparams.b':[-0.05,-0.04,-0.03,-0.02,-0.01,0.,0.01,0.02,0.03,0.04,0.05],
     #'Populations.cell.cellparams.a' : [8.,9.,10.,11.,12.,13.,14.,15.,16.,17.],
+    #'Populations.cell.cellparams.b' : [0.,0.01,0.02,0.03,0.04,0.05],
 
     # search Reticular to be confronted with the SlowDyn project TC results
     #'Populations.cell.cellparams.b':[-0.04,-0.03,-0.02,-0.01,0.,0.01,0.02,0.03,0.04,0.05,0.06],

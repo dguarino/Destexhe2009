@@ -36,6 +36,8 @@ import pickle
 from pyNN.utility.plotting import Figure, Panel
 import matplotlib.pyplot as plot
 from datetime import datetime
+from neo.core import AnalogSignalArray
+import quantities as pq
 
 
 def build_network(params):
@@ -160,10 +162,15 @@ def analyse(params, folder='results', addon='', removeDataFile=False):
         if 'spikes' in rec:
             panels.append( Panel(data.spiketrains, xlabel="Time (ms)", xticks=True, markersize=1) )
             # ISI
-            scores['ISI'] = isi(data.spiketrains)
-            print "ISI:", scores['ISI']
-            scores['CV'] = cv(data.spiketrains)
-            print "CVisi:", scores['CV']
+            #print data.spiketrains #* params['dt']
+            isitot = isi([data.spiketrains[0] * params['dt']])
+            scores['ISI'] = 0.0
+            scores['CV'] = 0.0
+            if hasattr(isitot, "__len__"):
+                scores['ISI'] = np.mean(isitot)/len(isitot)
+                print "ISI:", scores['ISI']
+                scores['CV'] = cv([data.spiketrains[0] * params['dt']])
+                print "CVisi:", scores['CV']
             # firing rate
             fr = rate(params, data.spiketrains, bin_size=10)
             fig = plot.figure(56)
@@ -173,8 +180,8 @@ def analyse(params, folder='results', addon='', removeDataFile=False):
             fig.clear()
 
         if params['Injections']:
-            amplitude = np.array([0.]+params['Injections']['LTS']['amplitude']+[0.])#[0.,-.25, 0.0, .25, 0.0, 0.]
-            start = np.array([0.]+params['Injections']['LTS']['start']+[params['run_time']])/params['dt']
+            amplitude = np.array([0.]+params['Injections']['cell']['amplitude']+[0.])#[0.,-.25, 0.0, .25, 0.0, 0.]
+            start = np.array([0.]+params['Injections']['cell']['start']+[params['run_time']])/params['dt']
             current = np.array([])
 
             for i in range(1,len(amplitude)):
@@ -289,9 +296,10 @@ def isi( spiketrains ):
     """
     Inter-Spike Intervals histogram for all spiketrains
     """
-    if spiketrains == [] :
+    if np.count_nonzero(np.array(spiketrains)) > 1:
+        return np.diff( spiketrains )
+    else:
         return None
-    return np.diff( spiketrains )
 
 
 
@@ -299,6 +307,7 @@ def cv( spiketrains ):
     """
     Coefficient of variation
     """
-    if spiketrains == [] :
+    if np.count_nonzero(np.array(spiketrains)) > 1:
+        return np.std(isi(spiketrains)) / np.mean(isi(spiketrains))
+    else:
         return None
-    return np.std(isi(spiketrains)) / np.mean(isi(spiketrains))

@@ -8,12 +8,34 @@
 from neuron import h, nrn, gui
 from math import sqrt, pi
 import pickle
+import numpy as np
 
 def area(sec):
     return sec.L * sec.diam * pi
 
+def isi( spiketrains ):
+    """
+    Inter-Spike Intervals histogram for all spiketrains
+    """
+    if np.count_nonzero(np.array(spiketrains)) > 1:
+        return np.diff( spiketrains )
+    else:
+        return None
+
+def cv( spiketrains ):
+    """
+    Coefficient of variation
+    """
+    if np.count_nonzero(np.array(spiketrains)) > 1:
+        return np.std(isi(spiketrains)) / np.mean(isi(spiketrains))
+    else:
+        return None
+
+
+
 h.load_file("nrngui.hoc")
 
+# -----------------------
 h.dt = 0.1 # ms timestep
 h.steps_per_ms = 1.0/0.1
 tstart = 0
@@ -62,14 +84,14 @@ soma.surf_IF_BG4     = area(soma)
 # Relevant parameters to reproduce figure1
 soma.a_IF_BG4        = .001 # figure 1ABC Destexhe2009
 soma.a_IF_BG4        = .02 # figure 1D Destexhe2009
-soma.a_IF_BG4        = .04 # figure 1E Destexhe2009
-soma.a_IF_BG4        = .08 # figure 1F Destexhe2009
+#soma.a_IF_BG4        = .04 # figure 1E Destexhe2009
+#soma.a_IF_BG4        = .08 # figure 1F Destexhe2009
 
 soma.b_IF_BG4        = .04     # figure 1A
 soma.b_IF_BG4        = .005    # figure 1B Destexhe2009
 soma.b_IF_BG4        = .02     # figure 1B closer to figure
-soma.b_IF_BG4        = .0      # figure 1CD Destexhe2009
-soma.b_IF_BG4        = .03     # figure 1F Destexhe2009
+soma.b_IF_BG4        = .0      # figure 1CDE Destexhe2009
+#soma.b_IF_BG4        = .03     # figure 1F Destexhe2009
 #soma.b_IF_BG4        = .0075   # figure 1C closer to figure
 
 # stimulation
@@ -98,6 +120,16 @@ with open('v_vec.p', 'w') as v_vec_file:
 #with open('v_vec.p') as vec_file:
 #    py_v_vec = pickle.load(vec_file)
 #    #print py_v_vec
+
+# analysis
+vm = np.array( v_vec.to_python() )
+print vm.shape
+spiketrains = np.where(vm >= 30.)[0] * h.dt
+print spiketrains
+isi_tot = isi([spiketrains])
+print 'ISI:', isi_tot
+print 'mean ISI:', np.mean(isi_tot)/ len(spiketrains)
+print 'CV:', cv([spiketrains])
 
 # ------------------------------------------------------------------------------
 # plotting
