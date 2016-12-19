@@ -5,15 +5,12 @@ params = {
     #'Populations.py.n' : [1600],
     #'Modifiers.py.cells.end' : [0.12,0.13,0.14],
     #'Modifiers.py.properties.a' : [0.01, .02, 0.03],
-    #'Populations.LTS.cellparams.a': [-1., -.5, -.1, -.05, 0., .05, .1, .5, .1],
-    #'Populations.LTS.cellparams.b': [-1., -.5, -.1, -.05, 0., .05, .1, .5, .1],
 
-    #'Populations.RS.cellparams.tau_m': [20., 30.], # 80nS BretteGerstner2005 figure 3D
-    #'Populations.cell.cellparams.tau_w': [150., 250., 350., 450., 550., 650.], # 80nS BretteGerstner2005 figure 3D
-    #'Populations.cell.cellparams.cm': [.1, .15, .18, .20, .22], # 80nS BretteGerstner2005 figure 3D
-
-    'Populations.cell.cellparams.a': np.arange(1., 40., 2.),
-    'Populations.cell.cellparams.b': np.arange(0., .4, .02),
+    #'Populations.RS.cellparams.tau_m': [20., 30.],
+    'Populations.cell.cellparams.tau_w': np.arange(.01, 800., 40.),
+    'Populations.cell.cellparams.cm': np.arange(.01, .6, .03), #
+    #'Populations.cell.cellparams.a': np.arange(1., 40., 2.),
+    #'Populations.cell.cellparams.b': np.arange(0., .4, .02),
 
     # search Thalamic to be confronted with the SlowDyn project TC results
     #'Populations.cell.cellparams.a' : [8.,9.,10.,11.,12.,13.,14.,15.,16.,17.],
