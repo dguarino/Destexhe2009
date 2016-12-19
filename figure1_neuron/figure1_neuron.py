@@ -50,7 +50,7 @@ TAU             = 20                            # time constant in ms
 CAPACITANCE     = 1                             # capacitance in muF/cm2
 G_L             = 1e-3 * CAPACITANCE / TAU      # leak conductance in S/cm2
 V_REST          = -60                           # resting potential
-V_REST          = -65                           # figure1A
+#V_REST          = -65                           # figure1A
 TAU_W           = 600
 DELTA           = 2.5
 # Spike parameters
@@ -123,9 +123,9 @@ with open('v_vec.p', 'w') as v_vec_file:
 
 # analysis
 vm = np.array( v_vec.to_python() )
-print vm.shape
+#print vm.shape
 spiketrains = np.where(vm >= 30.)[0] * h.dt
-print spiketrains
+print "SC",len(spiketrains)
 isi_tot = isi([spiketrains])
 print 'ISI:', isi_tot
 print 'mean ISI:', np.mean(isi_tot)/ len(spiketrains)

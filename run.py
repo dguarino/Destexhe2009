@@ -104,8 +104,9 @@ if doParameterSearch:
 
 # run combinations
 info = []
+totc = len(combinations)
 for i,comb in enumerate(combinations):
-    print "param combination",i
+    print "\n\nparam combination:",i,"/",totc
     print "current set:",comb
 
     # replacement
@@ -132,8 +133,8 @@ for i,comb in enumerate(combinations):
         if i == 0:
             with open(data_folder+'/map.csv', 'wb') as csvfile:
                 fh = csv.writer(csvfile)
-                fh.writerow( ['#'+str(testParams[1])+ ':' +str(search.params[testParams[1]]) ] )
-                fh.writerow( ['#'+str(testParams[0])+ ':' +str(search.params[testParams[0]]) ] )
+                fh.writerow( ['#'+str(testParams[1])+':['+",".join(map(str, search.params[testParams[1]]))+"]" ] )
+                fh.writerow( ['#'+str(testParams[0])+':['+",".join(map(str, search.params[testParams[0]]))+"]" ] )
 
         info.append(scores.values())
         if (i+1)%len(search.params[testParams[1]]) == 0:

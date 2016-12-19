@@ -12,8 +12,8 @@ params = {
     #'Populations.cell.cellparams.tau_w': [150., 250., 350., 450., 550., 650.], # 80nS BretteGerstner2005 figure 3D
     #'Populations.cell.cellparams.cm': [.1, .15, .18, .20, .22], # 80nS BretteGerstner2005 figure 3D
 
-    'Populations.cell.cellparams.a': np.arange(1., 30., 2.),
-    'Populations.cell.cellparams.b': np.arange(.0, .4, .03),
+    'Populations.cell.cellparams.a': np.arange(1., 40., 2.),
+    'Populations.cell.cellparams.b': np.arange(0., .4, .02),
 
     # search Thalamic to be confronted with the SlowDyn project TC results
     #'Populations.cell.cellparams.a' : [8.,9.,10.,11.,12.,13.,14.,15.,16.,17.],

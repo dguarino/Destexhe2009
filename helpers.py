@@ -161,16 +161,17 @@ def analyse(params, folder='results', addon='', removeDataFile=False):
 
         if 'spikes' in rec:
             panels.append( Panel(data.spiketrains, xlabel="Time (ms)", xticks=True, markersize=1) )
+            # Spike Count
+            scores['SC'] = 0
+            if hasattr(data.spiketrains[0], "__len__"):
+                scores['SC'] = len(data.spiketrains[0])
             # ISI
-            #print data.spiketrains #* params['dt']
             isitot = isi([data.spiketrains[0] * params['dt']])
             scores['ISI'] = 0.0
             scores['CV'] = 0.0
             if hasattr(isitot, "__len__"):
                 scores['ISI'] = np.mean(isitot)/len(isitot)
-                print "ISI:", scores['ISI']
                 scores['CV'] = cv([data.spiketrains[0] * params['dt']])
-                print "CVisi:", scores['CV']
             # firing rate
             fr = rate(params, data.spiketrains, bin_size=10)
             fig = plot.figure(56)
@@ -219,6 +220,7 @@ def analyse(params, folder='results', addon='', removeDataFile=False):
         if removeDataFile:
             os.remove(folder+'/'+key+addon+'.pkl')
 
+    print scores
     return scores
 
 
