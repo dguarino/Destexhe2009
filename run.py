@@ -1,5 +1,5 @@
 """
-Copyright (c) 2016, Domenico GUARINO, Eloise SOULIER
+Copyright (c) 2016, Domenico GUARINO
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -26,21 +26,25 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 import NeuroTools.signals
-import numpy.random
 import os
 import csv
 import shutil
-from pyNN.nest import *
-from numpy import *
-import matplotlib.pyplot as plot
+from pyNN.utility import get_simulator
+from pyNN.utility import init_logging
+from pyNN.utility import normalized_filename
 from pyNN.utility import Timer
+import numpy as np
+import matplotlib.pyplot as plot
 import sys, getopt
 import itertools as it
 
 import helpers as h
 
 
+
+
 # ADDITIONAL FUNCTIONS ---------------------------------------------------------
+
 def replace(dic, keys,value):
     getValue(dic,keys[:-1])[keys[-1]]=value
 
@@ -48,57 +52,57 @@ def getValue(dic, keys):
     return reduce(lambda d, k: d[k], keys, dic)
 
 
-
 # ------------------------------------------------------------------------------
-usage_str = 'usage: run.py [-a] [-r] -f<data folder> -p<param file> [-s<search file>]'
-doAnalaysisOnly = False
-doParameterSearch = False
-removeDataFile = False
-data_folder = 'results'
-params_filename = ''
+sim, opts = get_simulator(
+        ("--analysis", "Perform analysis only", {"type":bool}),
+        ("--remove", "Remove data files (after analysis)", {"type":bool}),
+        ("--folder", "Folder to save the data in (created if it does not exists)", {"dest":"data_folder", "required":True}),
+        ("--params", "Parameter filename", {"dest":"param_file", "required":True}),
+        ("--search", "Parameter search filename", {"dest":"search_file"}),
+        ("--map",    "Produce a map of 2D parameter search", {"type":bool}),
+        ("--debug", "Print debugging information")
+    )
 
-try:
-    opts, args = getopt.getopt(sys.argv[1:], "harf:p:s:" )
-except getopt.GetoptError:
-    print usage_str,"error"
-    sys.exit(2)
-if len(opts)==0:
-    print usage_str,"empty opts"
-for opt, arg in opts:
-    if opt == '-h':
-        print usage_str
-        sys.exit()
-    elif opt == '-a':
-        print "Running analysis and plotting only ..."
-        doAnalaysisOnly=True
-    elif opt == '-r':
-        print "Removing data files after analysis ..."
-        removeDataFile=True
-    elif opt == '-f':
-        data_folder = arg
-        print "Data will be saved in:", data_folder
-    elif opt == '-p':
-        print "Using parameter file:", arg
-        external = __import__(arg)
-        params_filename = arg
-    elif opt == '-s':
-        print "Executing parameter search using file:", arg
-        search = __import__(arg)
-        doParameterSearch = True
+if opts.debug:
+    init_logging(None, debug=True)
 
-if params_filename=='':
-    print usage_str,"error"
+if opts.analysis:
+    print "Running analysis and plotting only ..."
+
+if opts.remove:
+    print "Removing data files after analysis ..."
+
+if opts.data_folder:
+    print "Data will be saved in:", opts.data_folder
+
+params = {}
+if opts.param_file != '':
+    print "Using parameter file:", opts.param_file
+    with open(opts.param_file, 'r') as pfile:
+        pstring = pfile.read()
+        params = eval(pstring)
+else:
+    print "ERROR: you must specify a parameter file!"
     sys.exit(2)
+
+search = {}
+if opts.search_file:
+    print "Executing parameter search using file:", opts.search_file
+    with open(opts.search_file, 'r') as sfile:
+        sstring = sfile.read()
+        search = eval(sstring)
+
+
 
 
 combinations = [{'default':''}] # init
-if doParameterSearch:
+if search:
     # create parameter combinations
-    testParams = sorted(search.params) # give an order to dict (by default unordered)
+    testParams = sorted(search) # give an order to dict (by default unordered)
     # create an array of dictionaries:
     # each dict being the joining of one of the testKey and a value testVal
     # each testVal is produced by internal product of all array in testParams
-    combinations = [dict(zip(testParams, testVal)) for testVal in it.product(*(search.params[testKey] for testKey in testParams))]
+    combinations = [dict(zip(testParams, testVal)) for testVal in it.product(*(search[testKey] for testKey in testParams))]
     #print len(combinations),combinations # to be commented
 
 
@@ -112,33 +116,34 @@ for i,comb in enumerate(combinations):
     # replacement
     for ckey,val in comb.iteritems():
         keys = ckey.split('.') # get list from dotted string
-        replace(external.params,keys,val)
+        replace(params,keys,val)
 
     # save parameters in the data_folder
-    if not os.path.exists(data_folder):
-        os.makedirs(data_folder)
-    shutil.copy('./'+params_filename+'.py', data_folder+'/'+params_filename+'_'+str(comb)+'.py')
+    if not os.path.exists(opts.data_folder):
+        os.makedirs(opts.data_folder)
+    shutil.copy('./'+opts.param_file, opts.data_folder+'/'+str(comb)+'_'+opts.param_file)
 
-    if not doAnalaysisOnly:
-        Populations = h.build_network(external.params)
-        h.record_data(external.params, Populations)
-        h.perform_injections(external.params, Populations)
-        h.run_simulation(external.params)
-        h.save_data(Populations, data_folder, str(comb))
-        end()
+    if not opts.analysis:
+        Populations = h.build_network(sim, params)
+        h.record_data(params, Populations)
+        h.perform_injections(params, Populations)
+        h.run_simulation(sim, params)
+        h.save_data(Populations, opts.data_folder, str(comb))
+        sim.end()
 
-    scores = h.analyse(external.params, data_folder, str(comb), removeDataFile)
+    scores = h.analyse(params, opts.data_folder, str(comb), opts.remove)
+
     # map storage of scores
-    if doParameterSearch:
+    if search and opts.map:
         if i == 0:
-            with open(data_folder+'/map.csv', 'wb') as csvfile:
+            with open(opts.data_folder+'/map.csv', 'wb') as csvfile:
                 fh = csv.writer(csvfile)
-                fh.writerow( ['#'+str(testParams[1])+':['+",".join(map(str, search.params[testParams[1]]))+"]" ] )
-                fh.writerow( ['#'+str(testParams[0])+':['+",".join(map(str, search.params[testParams[0]]))+"]" ] )
+                fh.writerow( ['#'+str(testParams[1])+':['+",".join(map(str, search[testParams[1]]))+"]" ] )
+                fh.writerow( ['#'+str(testParams[0])+':['+",".join(map(str, search[testParams[0]]))+"]" ] )
 
         info.append(scores.values())
-        if (i+1)%len(search.params[testParams[1]]) == 0:
-            with open(data_folder+'/map.csv', 'a') as csvfile:
+        if (i+1)%len(search[testParams[1]]) == 0:
+            with open(opts.data_folder+'/map.csv', 'a') as csvfile:
                 fh = csv.writer(csvfile)
                 fh.writerow(info)
                 info = []

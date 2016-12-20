@@ -29,8 +29,6 @@ import NeuroTools.signals
 import numpy as np
 import random as rd
 import os
-from numpy import *
-from pyNN.nest import *
 from pyNN.utility import Timer
 import pickle
 from pyNN.utility.plotting import Figure, Panel
@@ -40,23 +38,24 @@ from neo.core import AnalogSignalArray
 import quantities as pq
 
 
-def build_network(params):
-    setup( timestep=params['dt'] )
+
+def build_network(sim, params):
+    sim.setup( timestep=params['dt'] )
 
     populations = {}
     for popKey,popVal in params['Populations'].iteritems():
         if isinstance(popVal['n'],dict):
             number = int(params['Populations'][popVal['n']['ref']]['n'] * popVal['n']['ratio'])
-            populations[popKey] = Population( number, popVal['type'], cellparams=popVal['cellparams'] )
+            populations[popKey] = sim.Population( number, popVal['type'], cellparams=popVal['cellparams'] )
         else:
-            populations[popKey] = Population( popVal['n'], popVal['type'], cellparams=popVal['cellparams'] )
+            populations[popKey] = sim.Population( popVal['n'], popVal['type'], cellparams=popVal['cellparams'] )
 
     for key in populations.keys():
         populations[key].initialize()
 
     projections = {}
     for projKey,projVal in params['Projections'].iteritems():
-        projections[projKey] = Projection(
+        projections[projKey] = sim.Projection(
             populations[ projVal['source'] ],
             populations[ projVal['target'] ],
             connector = projVal['connector'],
@@ -81,6 +80,15 @@ def build_network(params):
     return populations
 
 
+def run_simulation(sim, params):
+    print "Running Network ..."
+    timer = Timer()
+    timer.reset()
+    sim.run(params['run_time'])
+    simCPUtime = timer.elapsedTime()
+    print "... The simulation took %s ms to run." % str(simCPUtime)
+
+
 def perform_injections(params, populations):
     for modKey,modVal in params['Injections'].iteritems():
         if isinstance(modVal['start'], (list)):
@@ -98,15 +106,6 @@ def record_data(params, populations):
                 populations[recPop].record( elKey )
             else:
                 populations[recPop][elVal['start']:elVal['end']].record( elKey )
-
-
-def run_simulation(params):
-    print "Running Network"
-    timer = Timer()
-    timer.reset()
-    run(params['run_time'])
-    simCPUtime = timer.elapsedTime()
-    print "Simulation Time: %s" % str(simCPUtime)
 
 
 def save_data(populations, folder, addon=''):
@@ -145,11 +144,6 @@ def analyse(params, folder='results', addon='', removeDataFile=False):
         if 'v' in rec:
             vm = data.filter(name = 'v')[0]
             panels.append( Panel(vm, ylabel="Membrane potential (mV)", xlabel="Time (ms)", xticks=True, yticks=True, legend=None) )
-            # Vm histogram
-            fig = plot.figure()
-            ylabel = key
-            n,bins,patches = plot.hist(np.mean(vm,1),50)
-            fig.savefig(folder+'/Vm_histogram_'+key+addon+'.png')
 
         if 'gsyn_exc' in rec:
             gsyn_exc = data.filter(name="gsyn_exc")[0]
@@ -198,23 +192,20 @@ def analyse(params, folder='results', addon='', removeDataFile=False):
 
         # LFP
         if 'v' in rec and 'gsyn_exc' in rec:
-            lfp = compute_LFP(data)
+            # LFP
+            lfp = LFP(data)
             lfp = lfp.reshape(((params['run_time']/params['dt'])+1,1))
-            #print lfp.shape
             vm = data.filter(name = 'v')[0]
-            #print vm.shape
             fig = plot.figure()
             plot.plot(lfp)
             fig.savefig(folder+'/LFP_'+key+addon+'.png')
             fig.clear()
-
-        ## metric supposed to characterize bimodality
-        #bins = bins[:-1]
-        #prop_left = sum([n[i] for i,data in enumerate(bins) if bins[i]<(np.mean(vm)-np.std(vm)/2)])/sum(n)
-        #prop_right = sum([n[i] for i,data in enumerate(bins) if bins[i]>(np.mean(vm)+np.std(vm)/2)])/sum(n)
-        #scores[key] = float("{0:.2f}".format(prop_left*prop_right))
-        #print "prop_left",prop_left, "prop_right",prop_right
-        #print "scores",prop_left*prop_right
+            # Vm histogram
+            fig = plot.figure()
+            ylabel = key
+            n,bins,patches = plot.hist(np.mean(vm,1),50)
+            fig.savefig(folder+'/Vm_histogram_'+key+addon+'.png')
+            fig.clear()
 
         # for systems with low memory :)
         if removeDataFile:
@@ -224,24 +215,21 @@ def analyse(params, folder='results', addon='', removeDataFile=False):
     return scores
 
 
-def compute_LFP(data):
+def LFP(data):
     v = data.filter(name="v")[0]
     g = data.filter(name="gsyn_exc")[0]
     # We produce the current for each cell for this time interval, with the Ohm law:
     # I = g(V-E), where E is the equilibrium for exc, which usually is 0.0 (we can change it)
     # (and we also have to consider inhibitory condictances)
-    #print 'v', v
     i = g*(v) #AMPA
-    #print 'i',i
     # the LFP is the result of cells' currents
-    avg_i_by_t = numpy.sum(i,axis=1)/i.shape[0] #
-    #print 'avg',len(avg_i_by_t)
+    avg_i_by_t = np.sum(i,axis=1)/i.shape[0] #
     sigma = 0.1 # [0.1, 0.01] # Dobiszewski_et_al2012.pdf
-    lfp = (1/(4*numpy.pi*sigma)) * avg_i_by_t
+    lfp = (1/(4*np.pi*sigma)) * avg_i_by_t
     return lfp
 
 
-def compute_adaptation_index(data):
+def adaptation_index(data):
     # from NaudMarcilleClopathGerstner2008
     k = 2
     st = data.spiketrains
@@ -249,7 +237,7 @@ def compute_adaptation_index(data):
     if st == []:
         return None
     # ISI
-    isi = numpy.diff(st)
+    isi = np.diff(st)
     #print isi
     running_sum = 0
     for i,interval in enumerate(isi):

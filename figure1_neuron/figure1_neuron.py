@@ -1,7 +1,29 @@
 # it requires
 # - neuron installed (iv not necessary)
-#   follow instructions on http://www.davison.webfactional.com/notes/installation-neuron-python/
-#   (--without-iv)
+#   follow instructions on
+#   http://www.davison.webfactional.com/notes/installation-neuron-python/
+#   http://www.neuron.yale.edu/neuron/download/compile_linux
+#   Simplest installation under Linux with support for python:
+#   ./configure --without-iv --with-nrnpython
+#   $ make
+#   $ sudo make install
+
+#   create the file nrnenv in /usr/local/nrn with the content:
+#    export N=/usr/local/nrn
+#    export CPU=x86_64 # example, put your own
+#    export PATH="$N/$CPU/bin:$PATH"
+
+#   add the following line to the .bashrc file:
+#    source /usr/local/nrn/nrnenv
+
+#   compile the python interpreter and install it in your virtualenv folder:
+#   $ cd src/nrnpython
+#   $ python setup.py install --prefix=$HOME/Envs/pynn
+
+# - compile neuron modules for pyNN:
+#   $ cd $HOME/Envs/pynn/local/lib/python2.7/site-packages/pyNN/neuron/nmodl
+#   $ nrnivmodl
+
 # - compilation of IF_BG4.mod:
 #   $ nrnivmodl IF_BG4.mod
 
@@ -36,7 +58,7 @@ def cv( spiketrains ):
 h.load_file("nrngui.hoc")
 
 # -----------------------
-h.dt = 0.1 # ms timestep
+h.dt = 0.01 # ms timestep
 h.steps_per_ms = 1.0/0.1
 tstart = 0
 h.tstop = 1000
@@ -83,14 +105,14 @@ soma.surf_IF_BG4     = area(soma)
 
 # Relevant parameters to reproduce figure1
 soma.a_IF_BG4        = .001 # figure 1ABC Destexhe2009
-soma.a_IF_BG4        = .02 # figure 1D Destexhe2009
+#soma.a_IF_BG4        = .02 # figure 1D Destexhe2009
 #soma.a_IF_BG4        = .04 # figure 1E Destexhe2009
 #soma.a_IF_BG4        = .08 # figure 1F Destexhe2009
 
 soma.b_IF_BG4        = .04     # figure 1A
-soma.b_IF_BG4        = .005    # figure 1B Destexhe2009
-soma.b_IF_BG4        = .02     # figure 1B closer to figure
-soma.b_IF_BG4        = .0      # figure 1CDE Destexhe2009
+#soma.b_IF_BG4        = .005    # figure 1B Destexhe2009
+#soma.b_IF_BG4        = .02     # figure 1B closer to figure
+#soma.b_IF_BG4        = .0      # figure 1CDE Destexhe2009
 #soma.b_IF_BG4        = .03     # figure 1F Destexhe2009
 #soma.b_IF_BG4        = .0075   # figure 1C closer to figure
 
