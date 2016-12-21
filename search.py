@@ -5,10 +5,10 @@
     #'Modifiers.py.properties.a' : [0.01, .02, 0.03],
 
     #'Populations.cell.cellparams.tau_m': [20., 30.],
-    'Populations.cell.cellparams.tau_w': np.arange(.01, 800., 40.),
-    'Populations.cell.cellparams.cm': np.arange(.01, .6, .03), 
-    #'Populations.cell.cellparams.a': np.arange(.001, 40., 2.),
-    #'Populations.cell.cellparams.b': np.arange(.001, .4, .02),
+    #'Populations.cell.cellparams.tau_w': np.arange(.01, 800., 40.),
+    #'Populations.cell.cellparams.cm': np.arange(.01, .6, .03),
+    'Populations.cell.cellparams.a': np.arange(.001, 40., 2.),
+    'Populations.cell.cellparams.b': np.arange(.001, .08, .004),
 
     # search Thalamic to be confronted with the SlowDyn project TC results
     #'Populations.cell.cellparams.a' : [8.,9.,10.,11.,12.,13.,14.,15.,16.,17.],

@@ -181,9 +181,9 @@ def analyse(params, folder='results', addon='', removeDataFile=False):
 
             for i in range(1,len(amplitude)):
                 if current.shape == (0,):
-                    current = np.ones((start[i]-start[i-1]+1,1))*amplitude[i-1]
+                    current = np.ones( (start[i]-start[i-1]+1,1) )*amplitude[i-1]
                 else:
-                    current = np.concatenate((current,np.ones((start[i]-start[i-1],1))*amplitude[i-1]),0)
+                    current = np.concatenate( (current, np.ones( (start[i]-start[i-1],1) )*amplitude[i-1]), 0)
             current = AnalogSignalArray(current, units = 'mA',sampling_rate = params['dt']*pq.Hz)
             current.channel_index = np.array([0])
             panels.append( Panel(current,ylabel = "Current injection (mA)",xlabel="Time (ms)", xticks=True, legend=None) )
