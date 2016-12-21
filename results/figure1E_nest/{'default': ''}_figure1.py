@@ -16,20 +16,22 @@
                 'v_rest'     : -60.0, # mV, resting potential
                 'v_reset'    : -60.0, # mV, reset after spike
                 'v_thresh'   : -50.0, # mV, spike threshold
-                #'v_spike'    : 40.0,  # mV, spike detection (just to plot nicely)
-                'v_spike'    : -49.0, # mV, spike detection
+                #'v_spike'    : 40.0,  # mV, spike detection (just to plot it nicely)
+                'v_spike'    : -40.0, # mV, spike detection
                 'delta_T'    : 2.5,   # mV, steepness of exponential approach to threshold
                 'cm'         : 0.200, # nF, 1 uF/cm^2 with 20000 um^2 is the membrane area
                 'tau_m'      : 20.0,  # ms, time constant of leak conductance
                 'tau_w'      : 600.0, # ms, time constant of adaptation variable
                 #'a'          : .001,  # uS, spike-frequency adaptation (NEST,NEURON figure 1ABC)
                 #'a'          : 20.,   # uS, spike-frequency adaptation (NEST, NEURON figure 1D)
-                'a'          : 22.,   # uS, spike-frequency adaptation (NEST, NEURON figure 1E)
-                #'b'          : .08,   # nA, increment to the adaptation variable (figure1A) NEST:{'SC': 4, 'ISI': 0.9384, 'CV': 0.8767}, NEURON:{'SC': 4, 'ISI': 0.9385, 'CV': 0.8765}
-                #'b'          : .03,  # nA, increment to the adaptation variable (figure1B) NEST:{'SC': 9, 'ISI': 0.4444, 'CV': 0.6491}, NEURON:{'SC': 9, 'ISI': 0.4445, 'CV': 0.6488}
-                #'b'          : .013,  # nA, increment to the adaptation variable (figure1C) NEST:{'SC': 16, 'ISI': 0.2484, 'CV': 0.3353}, NEURON:{'SC': 16, 'ISI': 0.2485, 'CV': 0.3352}
-                #'b'          : .013,  # nA, increment to the adaptation variable (figure1D) NEST:{'SC': 16, 'ISI': 0.4996, 'CV': 1.5354}, NEURON:{'SC': 16, 'ISI': 0.4997, 'CV': 1.5348}
-                'b'          : .002,  # nA, increment to the adaptation variable (figure1E) NEST:, NEURON:
+                'a'          : 23.,   # uS, spike-frequency adaptation (NEST, NEURON figure 1E)
+                #'a'          : 40.,   # uS, spike-frequency adaptation (NEST, NEURON figure 1F)
+                #'b'          : .08,   # nA, increment to the adaptation variable (figure1A) NEST:{'SC': 4, 'ISI': 1.0498, 'CV': 0.7785}, NEURON:{'SC': 4, 'ISI': 1.0498, 'CV': 0.7785}
+                #'b'          : .028,  # nA, increment to the adaptation variable (figure1B) NEST:{'SC': 9, 'ISI': 0.4444, 'CV': 0.6491}, NEURON:{'SC': 9, 'ISI': 0.4445, 'CV': 0.6488}
+                #'b'          : .007,  # nA, increment to the adaptation variable (figure1C) NEST:{'SC': 16, 'ISI': 0.2424, 'CV': 0.1198}, NEURON:{'SC': 16, 'ISI': 0.2424, 'CV': 0.1197}
+                #'b'          : .007,  # nA, increment to the adaptation variable (figure1D) NEST:{'SC': 16, 'ISI': 0.4940, 'CV': 1.3792}, NEURON:{'SC': 16, 'ISI': 0.4940, 'CV': 1.3795}
+                'b'          : .0,    # nA, increment to the adaptation variable (figure1E) NEST:{'SC': 28, 'ISI': 0.2834, 'CV': 1.9298}, NEURON:{'SC': 28, 'ISI': 0.2835, 'CV': 1.9286}
+                #'b'          : .024,  # nA, increment to the adaptation variable (figure1E) NEST:{'SC': 9, 'ISI': 0.6472, 'CV': 1.4742}, NEURON:{'SC': 9, 'ISI': 0.6473, 'CV': 1.4735}
 
                 #'i_offset'   : 0.25,  # nA, constant injected current
             }

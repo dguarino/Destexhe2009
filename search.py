@@ -7,7 +7,7 @@
     #'Populations.cell.cellparams.tau_m': [20., 30.],
     #'Populations.cell.cellparams.tau_w': np.arange(.01, 800., 40.),
     #'Populations.cell.cellparams.cm': np.arange(.01, .6, .03),
-    'Populations.cell.cellparams.a': np.arange(.001, 40., 2.),
+    'Populations.cell.cellparams.a': np.arange(8., 12., .2),
     'Populations.cell.cellparams.b': np.arange(.001, .08, .004),
 
     # search Thalamic to be confronted with the SlowDyn project TC results
