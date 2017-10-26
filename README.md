@@ -2,6 +2,9 @@
 
 This repository is aimed at replicating with PyNN the full paper of Alain Destexhe "Self-sustained asynchronous irregular states and Up/Down states in thalamic, cortical and thalamocortical networks of nonlinear integrate-and-fire neurons" (Journal of Computational Neuroscience 27: 493-506, 2009).
 
+See also Andrew Davison's post on porting to PyNN one figure of this paper (http://andrewdavison.info/notes/porting-NEURON-PyNN/).
+
+
 ## Installation of NEST, NEURON, and pyNN
 
 ###1. Create a virtualenv
